@@ -43,6 +43,16 @@ public class JwtProvider {
         return null;
     }
 
+    public PublicKey getPublicKey() {
+        try {
+            return keyStore.getCertificate("keystore").getPublicKey();
+        } catch (KeyStoreException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
 
 
 
