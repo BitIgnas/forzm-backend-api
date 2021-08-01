@@ -19,7 +19,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> userOptional = userRepository.findUserByUsername(username);
+        Optional<User> userOptional = userRepositorygit.findUserByUsername(username);
         User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User was not found"));
 
         return org.springframework.security.core.userdetails.User.builder()
