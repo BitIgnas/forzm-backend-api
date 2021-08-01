@@ -17,7 +17,10 @@ public class Post {
     @GeneratedValue
     private Long id;
     private String title;
+    @Lob
     private String content;
+    @Enumerated(EnumType.STRING)
+    private PostType postType;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
@@ -26,5 +29,6 @@ public class Post {
     private Forum forum;
     @OneToMany(mappedBy = "post")
     private List<Comment> comments;
+
     private Instant created;
 }

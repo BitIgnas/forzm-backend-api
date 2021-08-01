@@ -15,6 +15,7 @@ public class Comment {
     @Id
     @GeneratedValue
     private Long id;
+    @Lob
     private String content;
     private Instant dateReplied;
     @ManyToOne(fetch = FetchType.LAZY)

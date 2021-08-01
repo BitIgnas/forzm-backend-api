@@ -1,7 +1,9 @@
 package org.forzm.demo.security;
 
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -9,16 +11,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.*;
 import java.security.cert.CertificateException;
+import java.sql.Date;
+import java.time.Instant;
 
 @Service
-@AllArgsConstructor
 public class JwtProvider {
 
-    @Value("${jwt.expiration.time}")
-    private Long jwtExpirationMilli;
+    private static final Long JWT_EXPIRATION = 900000L;
 
-    @Value("${jwt.keystore.password}")
-    private String keystorePassword;
+    private static final String KEYSTORE_PASSWORD = "password";
 
     private KeyStore keyStore;
 
@@ -27,7 +28,7 @@ public class JwtProvider {
         try {
             keyStore = KeyStore.getInstance("JKS");
             InputStream inputStream = getClass().getResourceAsStream("/keystore.jks");
-            keyStore.load(inputStream, keystorePassword.toCharArray());
+            keyStore.load(inputStream, KEYSTORE_PASSWORD.toCharArray());
         } catch (KeyStoreException | IOException | NoSuchAlgorithmException | CertificateException e) {
             e.printStackTrace();
         }
@@ -35,7 +36,7 @@ public class JwtProvider {
 
     public PrivateKey getPrivateKey() {
         try {
-            return (PrivateKey) keyStore.getKey("keystore", keystorePassword.toCharArray());
+            return (PrivateKey) keyStore.getKey("keystore", KEYSTORE_PASSWORD.toCharArray());
         } catch (KeyStoreException | NoSuchAlgorithmException | UnrecoverableKeyException e) {
             e.printStackTrace();
         }
@@ -53,7 +54,42 @@ public class JwtProvider {
         return null;
     }
 
+    public String generateJwt(Authentication authentication) {
+        User userPrincipal = (User) authentication.getPrincipal();
 
+        return Jwts.builder()
+                .setSubject(userPrincipal.getUsername())
+                .setIssuedAt(Date.from(Instant.now()))
+                .signWith(getPrivateKey())
+                .setExpiration(Date.from(Instant.now().plusMillis(JWT_EXPIRATION)))
+                .compact();
+    }
 
+    public String generateJwtWithUsername(String username) {
 
+        return Jwts.builder()
+                .setSubject(username)
+                .setIssuedAt(Date.from(Instant.now()))
+                .signWith(getPrivateKey())
+                .setExpiration(Date.from(Instant.now().plusMillis(JWT_EXPIRATION)))
+                .compact();
+    }
+
+    public boolean validateJwt(String token) {
+        Jwts.parser().setSigningKey(getPublicKey()).parseClaimsJws(token);
+        return true;
+    }
+
+    public String getUsernameFromJwt(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(getPublicKey())
+                .parseClaimsJws(token)
+                .getBody();
+
+        return claims.getSubject();
+    }
+
+    public Long getJwtExpiration() {
+        return JWT_EXPIRATION;
+    }
 }
