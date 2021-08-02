@@ -2,16 +2,14 @@ package org.forzm.demo.controllerAdvice;
 
 import org.forzm.demo.exception.ForumException;
 import org.forzm.demo.exception.PostException;
+import org.forzm.demo.exception.UserExistsException;
 import org.forzm.demo.exception.VerificationTokenException;
 import org.forzm.demo.model.ApiError;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.Instant;
@@ -30,5 +28,31 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .build();
 
         return new ResponseEntity<>(apiError, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler({UserExistsException.class})
+    public ResponseEntity<ApiError> handleUserExist(WebRequest request, RuntimeException exception) {
+        ApiError apiError = ApiError.builder()
+                .statusCode(HttpStatus.CONFLICT.value())
+                .httpStatus(HttpStatus.CONFLICT)
+                .message(exception.getMessage())
+                .description(request.getDescription(false))
+                .timestamp(Instant.now())
+                .build();
+
+        return new ResponseEntity<>(apiError, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler({ClassCastException.class})
+    public ResponseEntity<ApiError> handleInvalidJwt(WebRequest request, RuntimeException exception) {
+        ApiError apiError = ApiError.builder()
+                .statusCode(HttpStatus.UNAUTHORIZED.value())
+                .httpStatus(HttpStatus.UNAUTHORIZED)
+                .message("User is UNAUTHORIZED")
+                .description(request.getDescription(false))
+                .timestamp(Instant.now())
+                .build();
+
+        return new ResponseEntity<>(apiError, HttpStatus.UNAUTHORIZED);
     }
 }

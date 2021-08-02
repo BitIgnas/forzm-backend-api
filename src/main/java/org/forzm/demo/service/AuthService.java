@@ -10,6 +10,7 @@ public interface AuthService {
     void register(RegisterRequest registerRequest);
     AuthenticationResponse login(LoginRequest loginRequest);
     AuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest);
-    User getCurrentUser();
     void logout(RefreshTokenRequest refreshTokenRequest);
+    void checkIfUserExist(String username);
+    User getCurrentUser();
 }

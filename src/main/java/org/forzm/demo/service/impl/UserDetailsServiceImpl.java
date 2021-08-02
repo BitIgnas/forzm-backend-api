@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Optional;
 
 import static java.util.Collections.singletonList;
@@ -23,7 +24,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private final UserRepository userRepository;
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public UserDetails loadUserByUsername(String username) {
         Optional<User> userOptional = userRepository.findByUsername(username);
         User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("No user " +
@@ -32,11 +33,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(), user.getPassword(), user.isEnabled(),
                 true, true, true,
-                getAuthorities());
+                Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")));
     }
 
-    private Collection<? extends GrantedAuthority> getAuthorities() {
-        return singletonList(new SimpleGrantedAuthority("ROLE_USER"));
-
-    }
 }

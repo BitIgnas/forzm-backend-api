@@ -5,6 +5,7 @@ import org.forzm.demo.dto.AuthenticationResponse;
 import org.forzm.demo.dto.LoginRequest;
 import org.forzm.demo.dto.RefreshTokenRequest;
 import org.forzm.demo.dto.RegisterRequest;
+import org.forzm.demo.exception.UserExistsException;
 import org.forzm.demo.model.User;
 import org.forzm.demo.repository.RefreshTokenRepository;
 import org.forzm.demo.repository.UserRepository;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.Instant;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -38,6 +40,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void register(RegisterRequest registerRequest) {
+        checkIfUserExist(registerRequest.getUsername());
         User user = new User();
         user.setUsername(registerRequest.getUsername());
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
@@ -91,5 +94,11 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public void logout(RefreshTokenRequest refreshTokenRequest) {
         refreshTokenRepository.deleteByToken(refreshTokenRequest.getRefreshToken());
+    }
+
+    @Override
+    public void checkIfUserExist(String username) {
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        userOptional.ifPresent(user -> {throw new UserExistsException("User already exist");});
     }
 }
