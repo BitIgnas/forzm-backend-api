@@ -19,6 +19,7 @@ import java.net.URI;
 @RestController
 @RequestMapping("/api/auth")
 @AllArgsConstructor
+
 public class AuthController {
 
     private final AuthService authService;

@@ -20,7 +20,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 
-
 @Configuration
 @EnableWebSecurity
 @AllArgsConstructor
@@ -45,12 +44,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.cors().and().csrf().disable()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
-                .antMatchers(HttpMethod.GET,"/api/forum/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/forum/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/post/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/comment/**").permitAll()
-                .antMatchers(HttpMethod.POST,"/api/forum/**").authenticated()
+                .antMatchers(HttpMethod.POST, "/api/storage/user/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/storage/forum/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/forum/**").authenticated()
                 .antMatchers(HttpMethod.POST, "/api/post/**").authenticated()
                 .antMatchers(HttpMethod.POST, "/api/comment/**").authenticated()
+                .antMatchers(HttpMethod.POST, "/api/storage/**").authenticated()
                 .antMatchers("/h2-console/**").permitAll()
                 .and().headers().frameOptions().disable().and()
                 .sessionManagement()

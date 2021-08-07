@@ -10,6 +10,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.firewall.DefaultHttpFirewall;
 import org.springframework.security.web.firewall.HttpFirewall;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import java.time.Instant;
 
@@ -35,5 +37,6 @@ public class AppConfig implements CommandLineRunner {
     ModelMapper modelMapper() {
         return new ModelMapper();
     }
+
 
 }

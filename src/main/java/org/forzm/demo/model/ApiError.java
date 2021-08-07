@@ -13,7 +13,7 @@ import java.time.Instant;
 @NoArgsConstructor
 @Builder
 public class ApiError {
-    private int statusCode;
+    private Integer statusCode;
     private HttpStatus httpStatus;
     private String message;
     private String description;

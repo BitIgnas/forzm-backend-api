@@ -24,7 +24,7 @@ public class FileServiceImpl implements FileService {
     @Override
     public String uploadFile(MultipartFile file, String bucket) {
         String filenameExtension = StringUtils.getFilenameExtension(file.getOriginalFilename());
-        String fileKey = UUID.randomUUID().toString() + filenameExtension;
+        String fileKey = UUID.randomUUID().toString().concat("." + filenameExtension);
 
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentLength(file.getSize());
