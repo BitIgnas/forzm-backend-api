@@ -1,8 +1,8 @@
 package org.forzm.demo.service.impl;
 
 import lombok.AllArgsConstructor;
-import org.forzm.demo.dto.PostDto;
-import org.forzm.demo.exception.ForumException;
+import org.forzm.demo.dto.PostRequestDto;
+import org.forzm.demo.dto.PostResponseDto;
 import org.forzm.demo.exception.PostException;
 import org.forzm.demo.model.Forum;
 import org.forzm.demo.model.Post;
@@ -29,45 +29,60 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public PostDto addPost(PostDto postDto) {
-        Forum forum = forumRepository.getForumByName(postDto.getForumName())
+    public PostRequestDto addPost(PostRequestDto postRequestDto) {
+        Forum forum = forumRepository.getForumByName(postRequestDto.getForumName())
                 .orElseThrow(() -> new PostException("No forum was found"));
-        Post post = mapToPost(postDto);
+        Post post = mapToPost(postRequestDto);
         post.setForum(forum);
         post.setUser(authService.getCurrentUser());
         post.setCreated(Instant.now());
 
-        return mapToPostDto(postRepository.save(post));
+        return mapToPostRequestDto(postRepository.save(post));
     }
 
     @Override
-    public List<PostDto> findAllPosts() {
-        return postRepository.findAll().stream()
-                .map(this::mapToPostDto)
+    public List<PostResponseDto> findAllPostsByForumNameAndByPostType(String forumName, String forumType) {
+        List<Post> postsOptional = postRepository.findAllByForumName(forumName)
+                .orElseThrow(() -> new PostException("No posts were founded in "+ forumName));
+
+        return postsOptional.stream()
+                .filter(post -> post.getPostType().name().equals(forumType))
+                .map(this::mapToPostResponseDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     @Transactional
-    public PostDto findPostByTitle(String name) {
+    public PostRequestDto findPostByTitle(String name) {
         Post post = postRepository.findByTitle(name).orElseThrow(() -> new PostException("No posts where found"));
-        return mapToPostDto(post);
+        return mapToPostRequestDto(post);
     }
 
     @Override
     @Transactional
-    public void deletePost(PostDto postDto) {
-        postRepository.delete(mapToPost(postDto));
+    public void deletePost(PostRequestDto postRequestDto) {
+        postRepository.delete(mapToPost(postRequestDto));
     }
 
     @Override
-    public Post mapToPost(PostDto postDto) {
-        return modelMapper.map(postDto, Post.class);
+    @Transactional
+    public Long countAllForumPosts(String forumName) {
+        return postRepository.countAllByForumName(forumName);
     }
 
     @Override
-    public PostDto mapToPostDto(Post post) {
-        return modelMapper.map(post, PostDto.class);
+    public Post mapToPost(PostRequestDto postRequestDto) {
+        return modelMapper.map(postRequestDto, Post.class);
+    }
+
+    @Override
+    public PostRequestDto mapToPostRequestDto(Post post) {
+        return modelMapper.map(post, PostRequestDto.class);
+    }
+
+    @Override
+    public PostResponseDto mapToPostResponseDto(Post post) {
+        return modelMapper.map(post, PostResponseDto.class);
     }
 }
 

@@ -1,10 +1,14 @@
 package org.forzm.demo.security;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
@@ -15,6 +19,7 @@ import java.sql.Date;
 import java.time.Instant;
 
 @Service
+@Slf4j
 public class JwtProvider {
 
     private static final Long JWT_EXPIRATION = 900000L;
@@ -76,8 +81,14 @@ public class JwtProvider {
     }
 
     public boolean validateJwt(String token) {
-        Jwts.parser().setSigningKey(getPublicKey()).parseClaimsJws(token);
-        return true;
+            try {
+                Jwts.parser().setSigningKey(getPublicKey()).parseClaimsJws(token);
+                return true;
+            } catch (ExpiredJwtException e) {
+                log.error(String.valueOf(e));
+            }
+
+            return false;
     }
 
     public String getUsernameFromJwt(String token) {

@@ -1,7 +1,8 @@
 package org.forzm.demo.controller;
 
 import lombok.AllArgsConstructor;
-import org.forzm.demo.dto.ForumDto;
+import org.forzm.demo.dto.ForumRequestDto;
+import org.forzm.demo.dto.ForumResponseDto;
 import org.forzm.demo.service.ForumService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,24 +21,24 @@ public class ForumController {
     private final ForumService forumService;
 
     @PostMapping("/save")
-    public ResponseEntity<ForumDto> createForum(@RequestBody @Valid ForumDto forumDto) {
+    public ResponseEntity<ForumResponseDto> createForum(@RequestBody @Valid ForumRequestDto forumRequestDto) {
         URI location = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/forum/save").toUriString());
-        return ResponseEntity.created(location).body(forumService.saveForum(forumDto));
+        return ResponseEntity.created(location).body(forumService.createForum(forumRequestDto));
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<ForumDto>> getAllForums() {
+    public ResponseEntity<List<ForumResponseDto>> getAllForums() {
         return ResponseEntity.status(HttpStatus.OK).body(forumService.getAllForums());
     }
 
     @GetMapping("/{forumName}")
-    public ResponseEntity<ForumDto> getForumByName(@PathVariable("forumName") String name) {
+    public ResponseEntity<ForumResponseDto> getForumByName(@PathVariable("forumName") String name) {
         return ResponseEntity.status(HttpStatus.OK).body(forumService.findForumByName(name));
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<?> deleteForum(@RequestBody @Valid ForumDto forumDto) {
-        forumService.deleteForum(forumDto);
+    public ResponseEntity<?> deleteForum(@RequestBody @Valid ForumRequestDto forumRequestDto) {
+        forumService.deleteForum(forumRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

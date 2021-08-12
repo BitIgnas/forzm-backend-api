@@ -21,7 +21,7 @@ public class Post {
     private String content;
     @Enumerated(EnumType.STRING)
     private PostType postType;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
     @ManyToOne(fetch = FetchType.LAZY)
@@ -29,6 +29,5 @@ public class Post {
     private Forum forum;
     @OneToMany(mappedBy = "post")
     private List<Comment> comments;
-
     private Instant created;
 }

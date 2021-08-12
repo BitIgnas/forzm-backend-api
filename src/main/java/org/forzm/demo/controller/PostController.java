@@ -1,9 +1,8 @@
 package org.forzm.demo.controller;
 
 import lombok.AllArgsConstructor;
-import org.forzm.demo.dto.ForumDto;
-import org.forzm.demo.dto.PostDto;
-import org.forzm.demo.model.Post;
+import org.forzm.demo.dto.PostRequestDto;
+import org.forzm.demo.dto.PostResponseDto;
 import org.forzm.demo.service.PostService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,24 +21,30 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping("/save")
-    public ResponseEntity<PostDto> createPost(@RequestBody @Valid PostDto postDto) {
+    public ResponseEntity<PostRequestDto> createPost(@RequestBody @Valid PostRequestDto postRequestDto) {
         URI location = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/post/save").toUriString());
-        return ResponseEntity.created(location).body(postService.addPost(postDto));
+        return ResponseEntity.created(location).body(postService.addPost(postRequestDto));
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<PostDto>> getAllPosts() {
-        return ResponseEntity.status(HttpStatus.OK).body(postService.findAllPosts());
+    @GetMapping("/{forum}/{forumType}/all")
+    public ResponseEntity<List<PostResponseDto>> getAllPostsByForumAndByType(@PathVariable("forum") String forumName,
+                                                                             @PathVariable("forumType") String forumType) {
+        return ResponseEntity.status(HttpStatus.OK).body(postService.findAllPostsByForumNameAndByPostType(forumName, forumType));
     }
 
     @GetMapping("/{title}")
-    public ResponseEntity<PostDto> getPostByTitle(@PathVariable("title") String title) {
+    public ResponseEntity<PostRequestDto> getPostByTitle(@PathVariable("title") String title) {
         return ResponseEntity.status(HttpStatus.OK).body(postService.findPostByTitle(title));
     }
 
+    @GetMapping("/{forumName}/posts/count")
+    public ResponseEntity<Long> getPostCountByForumName(@PathVariable("forumName") String forumName) {
+        return ResponseEntity.status(HttpStatus.OK).body(postService.countAllForumPosts(forumName));
+    }
+
     @DeleteMapping("/delete")
-    public ResponseEntity<?> deletePost(@RequestBody @Valid PostDto postDto) {
-        postService.deletePost(postDto);
+    public ResponseEntity<?> deletePost(@RequestBody @Valid PostRequestDto postRequestDto) {
+        postService.deletePost(postRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

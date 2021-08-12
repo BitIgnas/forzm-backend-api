@@ -5,10 +5,10 @@ public enum ForumGameType {
     STRATEGY,
     RPG,
     ADVENTURE,
-    ROLE,
-    SPORTS,
+    SPORT,
     PUZZLE,
     SIMULATION,
     FIGHTING,
-    MMO
+    MMO,
+    MUSIC
 }

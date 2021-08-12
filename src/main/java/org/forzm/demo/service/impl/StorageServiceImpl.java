@@ -2,6 +2,7 @@ package org.forzm.demo.service.impl;
 
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.forzm.demo.exception.ForumException;
 import org.forzm.demo.exception.NoUserFoundException;
 import org.forzm.demo.model.Forum;
@@ -17,11 +18,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class StorageServiceImpl implements StorageService {
 
     private final UserRepository userRepository;
@@ -52,7 +57,9 @@ public class StorageServiceImpl implements StorageService {
 
     @Override
     public void saveForumImage(MultipartFile multipartFile, String title) {
-        Forum forum = forumRepository.getForumByName(title)
+        String forumName = decodeUrl(title);
+
+        Forum forum = forumRepository.getForumByName(forumName)
                 .orElseThrow(() -> new ForumException("No forum was found"));
 
         if (CONTENT_TYPES.contains(multipartFile.getContentType())) {
@@ -62,5 +69,16 @@ public class StorageServiceImpl implements StorageService {
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @Override
+    public String decodeUrl(String title) {
+        try {
+            return URLDecoder.decode(title, StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException e) {
+            log.error(e.toString());
+        }
+
+        return null;
     }
 }

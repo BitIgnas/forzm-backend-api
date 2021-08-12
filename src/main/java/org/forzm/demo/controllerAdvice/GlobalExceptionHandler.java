@@ -1,5 +1,6 @@
 package org.forzm.demo.controllerAdvice;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import org.apache.tomcat.util.http.fileupload.impl.SizeLimitExceededException;
 import org.forzm.demo.exception.ForumException;
 import org.forzm.demo.exception.PostException;
@@ -49,11 +50,24 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler({ClassCastException.class})
-    public ResponseEntity<ApiError> handleInvalidJwt(WebRequest request, RuntimeException exception) {
+    public ResponseEntity<ApiError> handleInvalidJwt(WebRequest request, Exception exception) {
         ApiError apiError = ApiError.builder()
                 .statusCode(HttpStatus.UNAUTHORIZED.value())
                 .httpStatus(HttpStatus.UNAUTHORIZED)
-                .message("User is UNAUTHORIZED")
+                .message(exception.getMessage())
+                .description(request.getDescription(false))
+                .timestamp(Instant.now())
+                .build();
+
+        return new ResponseEntity<>(apiError, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler({ExpiredJwtException.class})
+    public ResponseEntity<ApiError> handleJwtExpiredException(WebRequest request, ExpiredJwtException exception) {
+        ApiError apiError = ApiError.builder()
+                .statusCode(HttpStatus.UNAUTHORIZED.value())
+                .httpStatus(HttpStatus.UNAUTHORIZED)
+                .message(exception.getMessage())
                 .description(request.getDescription(false))
                 .timestamp(Instant.now())
                 .build();

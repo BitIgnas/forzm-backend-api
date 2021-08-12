@@ -1,7 +1,8 @@
 package org.forzm.demo.service.impl;
 
 import lombok.AllArgsConstructor;
-import org.forzm.demo.dto.ForumDto;
+import org.forzm.demo.dto.ForumResponseDto;
+import org.forzm.demo.dto.ForumRequestDto;
 import org.forzm.demo.exception.ForumException;
 import org.forzm.demo.model.Forum;
 import org.forzm.demo.repository.ForumRepository;
@@ -12,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.Instant;
-import java.util.FormatterClosedException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -27,40 +27,47 @@ public class ForumServiceImpl implements ForumService {
 
     @Override
     @Transactional
-    public ForumDto saveForum(ForumDto forumDto) {
-        Forum forum = mapToForum(forumDto);
+    public ForumResponseDto createForum(ForumRequestDto forumRequestDto) {
+        checkIfForumExist(forumRequestDto.getName());
+        Forum forum = mapToForum(forumRequestDto);
         forum.setUser(authService.getCurrentUser());
         forum.setCreated(Instant.now());
 
-        return mapToForumDto(forumRepository.save(forum));
+        return mapToForumResponseDto(forumRepository.save(forum));
     }
 
     @Override
     @Transactional
-    public List<ForumDto> getAllForums() {
-        return forumRepository.findAll().stream().map(this::mapToForumDto).collect(Collectors.toList());
+    public List<ForumResponseDto> getAllForums() {
+        return forumRepository.findAll().stream().map(this::mapToForumResponseDto).collect(Collectors.toList());
     }
 
     @Override
     @Transactional
-    public void deleteForum(ForumDto forumDto) {
-        forumRepository.delete(mapToForum(forumDto));
+    public void deleteForum(ForumRequestDto forumRequestDto) {
+        forumRepository.delete(mapToForum(forumRequestDto));
     }
 
     @Override
-    public ForumDto findForumByName(String name) {
-        Forum forum =  forumRepository.getForumByName(name).orElseThrow(() -> new ForumException("Forum was not found"));
-
-        return mapToForumDto(forum);
+    public void checkIfForumExist(String forumName) {
+        Optional<Forum> forumOptional = forumRepository.getForumByName(forumName);
+        forumOptional.ifPresent(forum -> { throw new ForumException("Forum already exists");});
     }
 
     @Override
-    public Forum mapToForum(ForumDto forumDto) {
-        return modelMapper.map(forumDto, Forum.class);
+    public ForumResponseDto findForumByName(String name) {
+        return mapToForumResponseDto(forumRepository.getForumByName(name).orElseThrow(() -> new ForumException("Forum was not found")));
     }
 
     @Override
-    public ForumDto mapToForumDto(Forum forum) {
-        return modelMapper.map(forum, ForumDto.class);
+    public ForumResponseDto mapToForumResponseDto(Forum forum) {
+        return modelMapper.map(forum, ForumResponseDto.class);
     }
+
+    @Override
+    public Forum mapToForum(ForumRequestDto forumRequestDto) {
+        return modelMapper.map(forumRequestDto, Forum.class);
+    }
+
+
 }
