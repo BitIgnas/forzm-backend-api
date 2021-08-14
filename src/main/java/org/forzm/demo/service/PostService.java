@@ -9,7 +9,7 @@ import java.util.List;
 public interface PostService {
     PostRequestDto addPost(PostRequestDto postRequestDto);
     List<PostResponseDto> findAllPostsByForumNameAndByPostType(String forumName, String forumType);
-    PostRequestDto findPostByTitle(String name);
+    PostResponseDto findByPostTitleAndId(String name, Long id);
     void deletePost(PostRequestDto postRequestDto);
     Long countAllForumPosts(String forumName);
     Post mapToPost(PostRequestDto postRequestDto);

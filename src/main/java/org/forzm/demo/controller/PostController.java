@@ -32,9 +32,9 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.OK).body(postService.findAllPostsByForumNameAndByPostType(forumName, forumType));
     }
 
-    @GetMapping("/{title}")
-    public ResponseEntity<PostRequestDto> getPostByTitle(@PathVariable("title") String title) {
-        return ResponseEntity.status(HttpStatus.OK).body(postService.findPostByTitle(title));
+    @GetMapping("/{title}/{id}")
+    public ResponseEntity<PostResponseDto> getPostByTitle(@PathVariable("title") String title, @PathVariable("id") Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(postService.findByPostTitleAndId(title, id));
     }
 
     @GetMapping("/{forumName}/posts/count")

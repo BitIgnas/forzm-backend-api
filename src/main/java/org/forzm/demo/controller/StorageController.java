@@ -1,17 +1,20 @@
 package org.forzm.demo.controller;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.forzm.demo.service.StorageService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 
 @RestController
 @RequestMapping("/api/storage")
 @AllArgsConstructor
+@Slf4j
 public class StorageController {
 
     private final StorageService storageService;

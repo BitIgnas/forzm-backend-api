@@ -53,9 +53,9 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public PostRequestDto findPostByTitle(String name) {
-        Post post = postRepository.findByTitle(name).orElseThrow(() -> new PostException("No posts where found"));
-        return mapToPostRequestDto(post);
+    public PostResponseDto findByPostTitleAndId(String name, Long id) {
+        Post post = postRepository.findPostByTitleAndId(name, id).orElseThrow(() -> new PostException("No posts where found"));
+        return mapToPostResponseDto(post);
     }
 
     @Override

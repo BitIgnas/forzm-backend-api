@@ -28,25 +28,27 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @Transactional
     public CommentDto addComment(CommentDto commentDto) {
-        Post post = postRepository.findByTitle(commentDto.getPostTitle())
-                .orElseThrow(() -> new PostException("No posts where found"));
-        Comment comment = mapToComment(commentDto);
-        comment.setUser(authService.getCurrentUser());
-        comment.setPost(post);
-        comment.setDateReplied(Instant.now());
-
-        return mapToCommentDto(commentRepository.save(comment));
+//        Post post = postRepository.findByTitle(commentDto.getPostTitle())
+//                .orElseThrow(() -> new PostException("No posts where found"));
+//        Comment comment = mapToComment(commentDto);
+//        comment.setUser(authService.getCurrentUser());
+//        comment.setPost(post);
+//        comment.setDateReplied(Instant.now());
+//
+//        return mapToCommentDto(commentRepository.save(comment));
+        return null;
     }
 
     @Override
     @Transactional
     public List<CommentDto> getAllPostComments(String title) {
-        Post post = postRepository.findByTitle(title)
-                .orElseThrow(() -> new PostException("No posts where found"));
-
-        return commentRepository.findAllByPost(post).stream()
-                .map(this::mapToCommentDto)
-                .collect(Collectors.toList());
+////        Post post = postRepository.findByTitle(title)
+////                .orElseThrow(() -> new PostException("No posts where found"));
+//
+//        return commentRepository.findAllByPost(post).stream()
+//                .map(this::mapToCommentDto)
+//                .collect(Collectors.toList());
+        return null;
     }
 
     @Override

@@ -68,14 +68,14 @@ public class AppConfig implements CommandLineRunner {
         forum4.setName("cyberpunk 2077");
         forum4.setDescription("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8HyXzHB_2T1iFR46HNEQO5WVHeibWA5fKgA&usqp=CAU");
         forum4.setCreated(Instant.now().plusMillis(200000000L));
-        forum4.setImageUrl("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8HyXzHB_2T1iFR46HNEQO5WVHeibWA5fKgA&usqp=CAU");
+        forum4.setImageUrl("https://www.notebookcheck.net/fileadmin/Notebooks/News/_nc3/cyberpunk_2077_rtx_3070.jpg");
 
         Forum forum5 = new Forum();
         forum5.setUser(user);
         forum5.setName("War thunder");
         forum5.setDescription("This is forum for batman arkham games, all users all welcome!");
         forum5.setCreated(Instant.now());
-        forum5.setImageUrl("https://static.warthunder.com/upload/image/wallpapers/1920x1080_logo_red_skies_cn_spaag_com_22ffd923591ff6c44b838185c64e127c.jpg");
+        forum5.setImageUrl("https://hdwallpaperim.com/wp-content/uploads/2017/08/24/107039-War_Thunder-airplane-Gaijin_Entertainment-tank-Tiger_I-Focke-Wulf_Fw_190.jpg");
 
         Forum forum6 = new Forum();
         forum6.setUser(user);
@@ -100,6 +100,30 @@ public class AppConfig implements CommandLineRunner {
         post2.setContent("How do i find batman in world");
         post2.setCreated(Instant.now());
 
+        Post post3 = new Post();
+        post3.setForum(forum5);
+        post3.setUser(user);
+        post3.setPostType(PostType.DISCUSSION);
+        post3.setTitle("How to get tiger 5 german tank");
+        post3.setContent("HOW DO I GET TIGER 1 tank?????");
+        post3.setCreated(Instant.now());
+
+        Post post4 = new Post();
+        post4.setForum(forum5);
+        post4.setUser(user);
+        post4.setPostType(PostType.DISCUSSION);
+        post4.setTitle("How to get tiger 5 german tank");
+        post4.setContent("HOW DO I GET panther 1 tank?????");
+        post4.setCreated(Instant.now());
+
+        Post post5 = new Post();
+        post5.setForum(forum5);
+        post5.setUser(user);
+        post5.setPostType(PostType.DISCUSSION);
+        post5.setTitle("How to get sherman  german tank");
+        post5.setContent("HOW DO I GET sherman tank?????");
+        post5.setCreated(Instant.now());
+
         forumRepository.save(forum1);
         forumRepository.save(forum2);
         forumRepository.save(forum3);
@@ -108,6 +132,9 @@ public class AppConfig implements CommandLineRunner {
         forumRepository.save(forum6);
         postRepository.save(post1);
         postRepository.save(post2);
+        postRepository.save(post3);
+        postRepository.save(post4);
+        postRepository.save(post5);
     }
 
     @Bean

@@ -2,10 +2,7 @@ package org.forzm.demo.controllerAdvice;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import org.apache.tomcat.util.http.fileupload.impl.SizeLimitExceededException;
-import org.forzm.demo.exception.ForumException;
-import org.forzm.demo.exception.PostException;
-import org.forzm.demo.exception.UserExistsException;
-import org.forzm.demo.exception.VerificationTokenException;
+import org.forzm.demo.exception.*;
 import org.forzm.demo.model.ApiError;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +20,7 @@ import java.time.Instant;
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler({ForumException.class, PostException.class, VerificationTokenException.class})
+    @ExceptionHandler({PostException.class, VerificationTokenException.class})
     public ResponseEntity<ApiError> handleEntityException(WebRequest request, RuntimeException exception) {
         ApiError apiError = ApiError.builder()
                 .statusCode(HttpStatus.NOT_FOUND.value())
@@ -38,6 +35,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({UserExistsException.class})
     public ResponseEntity<ApiError> handleUserExist(WebRequest request, RuntimeException exception) {
+        ApiError apiError = ApiError.builder()
+                .statusCode(HttpStatus.CONFLICT.value())
+                .httpStatus(HttpStatus.CONFLICT)
+                .message(exception.getMessage())
+                .description(request.getDescription(false))
+                .timestamp(Instant.now())
+                .build();
+
+        return new ResponseEntity<>(apiError, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler({ForumExistsException.class})
+    public ResponseEntity<ApiError> handleForumExistsException(WebRequest request, RuntimeException exception) {
         ApiError apiError = ApiError.builder()
                 .statusCode(HttpStatus.CONFLICT.value())
                 .httpStatus(HttpStatus.CONFLICT)

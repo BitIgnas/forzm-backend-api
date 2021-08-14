@@ -10,5 +10,6 @@ public enum ForumGameType {
     SIMULATION,
     FIGHTING,
     MMO,
-    MUSIC
+    MUSIC,
+    FPS
 }
