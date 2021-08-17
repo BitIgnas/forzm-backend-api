@@ -28,4 +28,5 @@ public class ForumResponseDto {
     private Instant created;
     @NotNull
     private String imageUrl;
+
 }

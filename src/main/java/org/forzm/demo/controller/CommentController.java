@@ -1,7 +1,8 @@
 package org.forzm.demo.controller;
 
 import lombok.AllArgsConstructor;
-import org.forzm.demo.dto.CommentDto;
+import org.forzm.demo.dto.CommentRequestDto;
+import org.forzm.demo.dto.CommentResponseDto;
 import org.forzm.demo.service.CommentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,13 +21,14 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("/save")
-    public ResponseEntity<CommentDto> addComment(@RequestBody @Valid CommentDto commentDto) {
+    public ResponseEntity<CommentResponseDto> addComment(@RequestBody @Valid CommentRequestDto commentRequestDto) {
         URI location = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/comment/save").toUriString());
-        return ResponseEntity.created(location).body(commentService.addComment(commentDto));
+        return ResponseEntity.created(location).body(commentService.addComment(commentRequestDto));
     }
 
-    @GetMapping("/{postTitle}")
-    public ResponseEntity<List<CommentDto>> getAllPostComments(@PathVariable("postTitle") String title) {
-        return ResponseEntity.status(HttpStatus.OK).body(commentService.getAllPostComments(title));
+    @GetMapping("/{postTitle}/{postId}")
+    public ResponseEntity<List<CommentResponseDto>> getAllPostComments(@PathVariable("postTitle") String title,
+                                                                       @PathVariable("postId") Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(commentService.getAllPostComments(title, id));
     }
 }

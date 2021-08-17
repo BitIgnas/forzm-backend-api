@@ -14,10 +14,12 @@ import java.time.Instant;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CommentDto {
+public class CommentRequestDto {
     @Lob
     @NotNull
     private String content;
     @NotNull
     private String postTitle;
+    @NotNull
+    private Long postId;
 }

@@ -19,6 +19,8 @@ public class Post {
     private String title;
     @Lob
     private String content;
+    @Lob
+    private String contentMarkup;
     @Enumerated(EnumType.STRING)
     private PostType postType;
     @ManyToOne(fetch = FetchType.EAGER)

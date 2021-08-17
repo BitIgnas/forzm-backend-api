@@ -1,10 +1,8 @@
 package org.forzm.demo.config;
 
 import lombok.AllArgsConstructor;
-import org.forzm.demo.model.Forum;
-import org.forzm.demo.model.Post;
-import org.forzm.demo.model.PostType;
-import org.forzm.demo.model.User;
+import org.forzm.demo.model.*;
+import org.forzm.demo.repository.CommentRepository;
 import org.forzm.demo.repository.ForumRepository;
 import org.forzm.demo.repository.PostRepository;
 import org.forzm.demo.repository.UserRepository;
@@ -23,10 +21,12 @@ import java.time.Instant;
 
 @Configuration
 @AllArgsConstructor
+@Transactional
 public class AppConfig implements CommandLineRunner {
     private final UserRepository userRepository;
     private final ForumRepository forumRepository;
     private final PostRepository postRepository;
+    private final CommentRepository commentRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -124,6 +124,12 @@ public class AppConfig implements CommandLineRunner {
         post5.setContent("HOW DO I GET sherman tank?????");
         post5.setCreated(Instant.now());
 
+        Comment comment1 = new Comment();
+        comment1.setUser(user);
+        comment1.setPost(post4);
+        comment1.setContent("u cant get tiger because ignas has it... Die soviet trash");
+        comment1.setDateReplied(Instant.now().plusSeconds(200000));
+
         forumRepository.save(forum1);
         forumRepository.save(forum2);
         forumRepository.save(forum3);
@@ -134,7 +140,9 @@ public class AppConfig implements CommandLineRunner {
         postRepository.save(post2);
         postRepository.save(post3);
         postRepository.save(post4);
-        postRepository.save(post5);
+        commentRepository.save(comment1);
+        userRepository.save(user);
+
     }
 
     @Bean

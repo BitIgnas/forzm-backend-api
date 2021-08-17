@@ -1,6 +1,7 @@
 package org.forzm.demo.service.impl;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.forzm.demo.dto.PostRequestDto;
 import org.forzm.demo.dto.PostResponseDto;
 import org.forzm.demo.exception.PostException;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;

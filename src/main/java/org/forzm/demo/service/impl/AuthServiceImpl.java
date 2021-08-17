@@ -1,10 +1,7 @@
 package org.forzm.demo.service.impl;
 
 import lombok.AllArgsConstructor;
-import org.forzm.demo.dto.AuthenticationResponse;
-import org.forzm.demo.dto.LoginRequest;
-import org.forzm.demo.dto.RefreshTokenRequest;
-import org.forzm.demo.dto.RegisterRequest;
+import org.forzm.demo.dto.*;
 import org.forzm.demo.exception.UserExistsException;
 import org.forzm.demo.model.User;
 import org.forzm.demo.repository.RefreshTokenRepository;
@@ -13,6 +10,7 @@ import org.forzm.demo.security.JwtProvider;
 import org.forzm.demo.service.AuthService;
 import org.forzm.demo.service.RefreshTokenService;
 import org.forzm.demo.service.VerificationService;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -37,6 +35,7 @@ public class AuthServiceImpl implements AuthService {
     private final RefreshTokenService refreshTokenService;
     private final PasswordEncoder passwordEncoder;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final ModelMapper modelMapper;
 
     @Override
     public void register(RegisterRequest registerRequest) {
@@ -92,6 +91,13 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    public UserResponseDto getUserFromToken(String token) {
+        String username = jwtProvider.getUsernameFromJwt(token);
+        return mapToResponseDto(userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("user was not found")));
+    }
+
+    @Override
     public void logout(RefreshTokenRequest refreshTokenRequest) {
         refreshTokenRepository.deleteByToken(refreshTokenRequest.getRefreshToken());
     }
@@ -100,5 +106,10 @@ public class AuthServiceImpl implements AuthService {
     public void checkIfUserExist(String username) {
         Optional<User> userOptional = userRepository.findByUsername(username);
         userOptional.ifPresent(user -> {throw new UserExistsException("User already exist");});
+    }
+
+    @Override
+    public UserResponseDto mapToResponseDto(User user) {
+        return modelMapper.map(user, UserResponseDto.class);
     }
 }

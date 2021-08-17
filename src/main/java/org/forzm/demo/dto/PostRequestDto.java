@@ -18,15 +18,11 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PostRequestDto {
-    @NotNull
     private String title;
-    @Lob
-    @NotNull
     private String content;
+    private String contentMarkup;
     @NotNull
     @Enumerated(EnumType.STRING)
-    @NotNull
     private PostType postType;
-    @NotNull
     private String forumName;
 }

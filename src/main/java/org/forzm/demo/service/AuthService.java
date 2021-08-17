@@ -1,9 +1,6 @@
 package org.forzm.demo.service;
 
-import org.forzm.demo.dto.AuthenticationResponse;
-import org.forzm.demo.dto.LoginRequest;
-import org.forzm.demo.dto.RefreshTokenRequest;
-import org.forzm.demo.dto.RegisterRequest;
+import org.forzm.demo.dto.*;
 import org.forzm.demo.model.User;
 
 public interface AuthService {
@@ -13,4 +10,6 @@ public interface AuthService {
     void logout(RefreshTokenRequest refreshTokenRequest);
     void checkIfUserExist(String username);
     User getCurrentUser();
+    UserResponseDto getUserFromToken(String token);
+    UserResponseDto mapToResponseDto(User user);
 }

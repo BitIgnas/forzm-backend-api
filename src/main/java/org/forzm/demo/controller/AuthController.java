@@ -1,10 +1,7 @@
 package org.forzm.demo.controller;
 
 import lombok.AllArgsConstructor;
-import org.forzm.demo.dto.AuthenticationResponse;
-import org.forzm.demo.dto.LoginRequest;
-import org.forzm.demo.dto.RefreshTokenRequest;
-import org.forzm.demo.dto.RegisterRequest;
+import org.forzm.demo.dto.*;
 import org.forzm.demo.model.RefreshToken;
 import org.forzm.demo.service.AuthService;
 import org.forzm.demo.service.VerificationService;
@@ -40,6 +37,11 @@ public class AuthController {
     public ResponseEntity<AuthenticationResponse> refreshToken(@RequestBody @Valid RefreshTokenRequest refreshTokenRequest) {
         URI location = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/auth/token/refresh").toUriString());
         return ResponseEntity.created(location).body(authService.refreshToken(refreshTokenRequest));
+    }
+
+    @GetMapping("/user/{authToken}")
+    public ResponseEntity<UserResponseDto> getCurrentUser(@PathVariable("authToken") String token) {
+        return ResponseEntity.status(HttpStatus.OK).body(authService.getUserFromToken(token));
     }
 
     @PostMapping("/logout")

@@ -1,13 +1,14 @@
 package org.forzm.demo.service;
 
-import org.forzm.demo.dto.CommentDto;
+import org.forzm.demo.dto.CommentRequestDto;
+import org.forzm.demo.dto.CommentResponseDto;
 import org.forzm.demo.model.Comment;
 
 import java.util.List;
 
 public interface CommentService {
-    CommentDto addComment(CommentDto commentDto);
-    List<CommentDto> getAllPostComments(String title);
-    Comment mapToComment(CommentDto commentDto);
-    CommentDto mapToCommentDto(Comment comment);
+    CommentResponseDto addComment(CommentRequestDto commentRequestDto);
+    List<CommentResponseDto> getAllPostComments(String title, Long postId);
+    Comment mapToComment(CommentRequestDto commentRequestDto);
+    CommentResponseDto mapToCommentResponseDto(Comment comment);
 }
