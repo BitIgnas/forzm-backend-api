@@ -38,12 +38,12 @@ public class AuthServiceImpl implements AuthService {
     private final ModelMapper modelMapper;
 
     @Override
-    public void register(RegisterRequest registerRequest) {
-        checkIfUserExist(registerRequest.getUsername());
+    public void register(RegisterRequestDto registerRequestDto) {
+        checkIfUserExist(registerRequestDto.getUsername());
         User user = new User();
-        user.setUsername(registerRequest.getUsername());
-        user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-        user.setEmail(registerRequest.getEmail());
+        user.setUsername(registerRequestDto.getUsername());
+        user.setPassword(passwordEncoder.encode(registerRequestDto.getPassword()));
+        user.setEmail(registerRequestDto.getEmail());
         user.setDateCreated(Instant.now());
         user.setEnabled(false);
 
@@ -53,32 +53,32 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public AuthenticationResponse login(LoginRequest loginRequest) {
+    public AuthenticationResponseDto login(LoginRequestDto loginRequestDto) {
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                loginRequest.getUsername(),
-                loginRequest.getPassword());
+                loginRequestDto.getUsername(),
+                loginRequestDto.getPassword());
         Authentication authenticate = authenticationManager.authenticate(authToken);
 
         SecurityContextHolder.getContext().setAuthentication(authenticate);
         String token = jwtProvider.generateJwt(authenticate);
-        return AuthenticationResponse.builder()
+        return AuthenticationResponseDto.builder()
                 .authenticationToken(token)
                 .refreshToken(refreshTokenService.generateRefreshToken().getToken())
                 .expiresAt(Instant.now().plusMillis(jwtProvider.getJwtExpiration()))
-                .username(loginRequest.getUsername())
+                .username(loginRequestDto.getUsername())
                 .build();
     }
 
     @Override
-    public AuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
-        refreshTokenService.validateRefreshToken(refreshTokenRequest.getRefreshToken());
-        String token = jwtProvider.generateJwtWithUsername(refreshTokenRequest.getUsername());
+    public AuthenticationResponseDto refreshToken(RefreshTokenRequestDto refreshTokenRequestDto) {
+        refreshTokenService.validateRefreshToken(refreshTokenRequestDto.getRefreshToken());
+        String token = jwtProvider.generateJwtWithUsername(refreshTokenRequestDto.getUsername());
 
-        return AuthenticationResponse.builder()
+        return AuthenticationResponseDto.builder()
                 .authenticationToken(token)
-                .refreshToken(refreshTokenRequest.getRefreshToken())
+                .refreshToken(refreshTokenRequestDto.getRefreshToken())
                 .expiresAt(Instant.now().plusMillis(jwtProvider.getJwtExpiration()))
-                .username(refreshTokenRequest.getUsername())
+                .username(refreshTokenRequestDto.getUsername())
                 .build();
     }
 
@@ -98,8 +98,8 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void logout(RefreshTokenRequest refreshTokenRequest) {
-        refreshTokenRepository.deleteByToken(refreshTokenRequest.getRefreshToken());
+    public void logout(RefreshTokenRequestDto refreshTokenRequestDto) {
+        refreshTokenRepository.deleteByToken(refreshTokenRequestDto.getRefreshToken());
     }
 
     @Override

@@ -1,6 +1,7 @@
 package org.forzm.demo.service.impl;
 
 import lombok.AllArgsConstructor;
+import org.forzm.demo.exception.RefreshTokenException;
 import org.forzm.demo.model.RefreshToken;
 import org.forzm.demo.repository.RefreshTokenRepository;
 import org.forzm.demo.service.RefreshTokenService;
@@ -27,7 +28,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     @Override
     public void validateRefreshToken(String refreshToken) {
         refreshTokenRepository.findRefreshTokenByToken(refreshToken)
-                .orElseThrow(() -> new RuntimeException("Refresh token was not found"));
+                .orElseThrow(() -> new RefreshTokenException("Refresh token was not found"));
     }
 
     @Override

@@ -59,31 +59,5 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(apiError, HttpStatus.CONFLICT);
     }
 
-    @ExceptionHandler({ClassCastException.class})
-    public ResponseEntity<ApiError> handleInvalidJwt(WebRequest request, Exception exception) {
-        ApiError apiError = ApiError.builder()
-                .statusCode(HttpStatus.UNAUTHORIZED.value())
-                .httpStatus(HttpStatus.UNAUTHORIZED)
-                .message(exception.getMessage())
-                .description(request.getDescription(false))
-                .timestamp(Instant.now())
-                .build();
-
-        return new ResponseEntity<>(apiError, HttpStatus.UNAUTHORIZED);
-    }
-
-    @ExceptionHandler({ExpiredJwtException.class})
-    public ResponseEntity<ApiError> handleJwtExpiredException(WebRequest request, ExpiredJwtException exception) {
-        ApiError apiError = ApiError.builder()
-                .statusCode(HttpStatus.UNAUTHORIZED.value())
-                .httpStatus(HttpStatus.UNAUTHORIZED)
-                .message(exception.getMessage())
-                .description(request.getDescription(false))
-                .timestamp(Instant.now())
-                .build();
-
-        return new ResponseEntity<>(apiError, HttpStatus.UNAUTHORIZED);
-    }
-
 
 }
