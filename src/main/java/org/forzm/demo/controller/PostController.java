@@ -26,14 +26,15 @@ public class PostController {
         return ResponseEntity.created(location).body(postService.addPost(postRequestDto));
     }
 
-    @GetMapping("/{forum}/{forumType}/all")
+    @GetMapping("/{forum}/{postType}/all")
     public ResponseEntity<List<PostResponseDto>> getAllPostsByForumAndByType(@PathVariable("forum") String forumName,
-                                                                             @PathVariable("forumType") String forumType) {
+                                                                             @PathVariable("postType") String forumType) {
         return ResponseEntity.status(HttpStatus.OK).body(postService.findAllPostsByForumNameAndByPostType(forumName, forumType));
     }
 
     @GetMapping("/{title}/{id}")
-    public ResponseEntity<PostResponseDto> getPostByTitle(@PathVariable("title") String title, @PathVariable("id") Long id) {
+    public ResponseEntity<PostResponseDto> getPostByTitle(@PathVariable("title") String title,
+                                                          @PathVariable("id") Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(postService.findByPostTitleAndId(title, id));
     }
 

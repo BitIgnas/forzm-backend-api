@@ -32,11 +32,11 @@ public class CommentServiceImpl implements CommentService {
     public CommentResponseDto addComment(CommentRequestDto commentRequestDto) {
         Post post = postRepository.findPostByTitleAndId(commentRequestDto.getPostTitle(), commentRequestDto.getPostId())
                 .orElseThrow(() -> new PostException("No posts where found"));
+
         Comment comment = mapToComment(commentRequestDto);
         comment.setUser(authService.getCurrentUser());
         comment.setPost(post);
         comment.setDateReplied(Instant.now());
-
         return mapToCommentResponseDto(commentRepository.save(comment));
     }
 
@@ -44,7 +44,7 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     public List<CommentResponseDto> getAllPostComments(String title, Long postId) {
         Post post = postRepository.findPostByTitleAndId(title, postId)
-                .orElseThrow(() -> new PostException("No posts where found"));
+                .orElseThrow(() -> new PostException("No post where found"));
 
         return commentRepository.findAllByPost(post).stream()
                 .map(this::mapToCommentResponseDto)

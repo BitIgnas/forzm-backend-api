@@ -41,6 +41,14 @@ public class ForumServiceImpl implements ForumService {
     }
 
     @Override
+    public List<ForumResponseDto> findForumByNameIgnoreCase(String name) {
+        return forumRepository.findAll().stream()
+                .map(this::mapToForumResponseDto)
+                .filter(forumResponseDto -> forumResponseDto.getName().toLowerCase().contains(name.toLowerCase()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     @Transactional
     public List<ForumResponseDto> getAllForums() {
         return forumRepository.getAllByOrderByPostsDesc().stream()
@@ -59,6 +67,13 @@ public class ForumServiceImpl implements ForumService {
     public void checkIfForumExist(String forumName) {
         Optional<Forum> forumOptional = forumRepository.getForumByName(forumName);
         forumOptional.ifPresent(forum -> { throw new ForumExistsException("Forum already exists");});
+    }
+
+    @Override
+    public List<ForumResponseDto> findUserForumsByUsername(String username) {
+        return forumRepository.findForumsByUser_Username(username).stream()
+                .map(this::mapToForumResponseDto)
+                .collect(Collectors.toList());
     }
 
     @Override

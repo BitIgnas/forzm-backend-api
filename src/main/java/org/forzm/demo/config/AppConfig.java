@@ -10,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.firewall.DefaultHttpFirewall;
 import org.springframework.security.web.firewall.HttpFirewall;
@@ -21,6 +22,7 @@ import java.time.Instant;
 
 @Configuration
 @AllArgsConstructor
+@EnableScheduling
 @Transactional
 public class AppConfig implements CommandLineRunner {
     private final UserRepository userRepository;
@@ -84,6 +86,14 @@ public class AppConfig implements CommandLineRunner {
         forum6.setCreated(Instant.now().plusSeconds(200000000));
         forum6.setImageUrl("https://static-01.shop.com.mm/p/786b1154e512f63e2ad96cd78f470f1e.jpg");
 
+        Forum forum7 = new Forum();
+        forum7.setUser(user);
+        forum7.setName("METAL GEAR SOLID V");
+        forum7.setDescription("This is forum for batman arkham games, all users all welcome!");
+        forum7.setCreated(Instant.now().plusSeconds(2000000));
+        forum7.setImageUrl("https://2game.com/wp/wp-content/uploads/2019/12/Metal-Gear-Solid-V-Phantom-Pain.jpg");
+
+
         Post post1 = new Post();
         post1.setForum(forum1);
         post1.setUser(user);
@@ -136,13 +146,13 @@ public class AppConfig implements CommandLineRunner {
         forumRepository.save(forum4);
         forumRepository.save(forum5);
         forumRepository.save(forum6);
+        forumRepository.save(forum7);
         postRepository.save(post1);
         postRepository.save(post2);
         postRepository.save(post3);
         postRepository.save(post4);
         commentRepository.save(comment1);
         userRepository.save(user);
-
     }
 
     @Bean

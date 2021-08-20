@@ -12,5 +12,6 @@ import java.util.Optional;
 @Repository
 public interface ForumRepository extends JpaRepository<Forum, Long> {
     Optional<Forum> getForumByName(String name);
+    List<Forum> findForumsByUser_Username(String username);
     List<Forum> getAllByOrderByPostsDesc();
 }

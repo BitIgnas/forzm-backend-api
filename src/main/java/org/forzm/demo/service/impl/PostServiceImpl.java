@@ -7,6 +7,7 @@ import org.forzm.demo.dto.PostResponseDto;
 import org.forzm.demo.exception.PostException;
 import org.forzm.demo.model.Forum;
 import org.forzm.demo.model.Post;
+import org.forzm.demo.model.PostType;
 import org.forzm.demo.repository.ForumRepository;
 import org.forzm.demo.repository.PostRepository;
 import org.forzm.demo.service.AuthService;
@@ -43,12 +44,8 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostResponseDto> findAllPostsByForumNameAndByPostType(String forumName, String forumType) {
-        List<Post> postsOptional = postRepository.findAllByForumName(forumName)
-                .orElseThrow(() -> new PostException("No posts were founded in "+ forumName));
-
-        return postsOptional.stream()
-                .filter(post -> post.getPostType().name().equals(forumType))
+    public List<PostResponseDto> findAllPostsByForumNameAndByPostType(String forumName, String postType) {
+        return postRepository.findAllByForumNameAndPostType(forumName, PostType.valueOf(postType.toUpperCase())).stream()
                 .map(this::mapToPostResponseDto)
                 .collect(Collectors.toList());
     }
@@ -56,7 +53,8 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional
     public PostResponseDto findByPostTitleAndId(String name, Long id) {
-        Post post = postRepository.findPostByTitleAndId(name, id).orElseThrow(() -> new PostException("No posts where found"));
+        Post post = postRepository.findPostByTitleAndId(name, id)
+                .orElseThrow(() -> new PostException("No posts where found"));
         return mapToPostResponseDto(post);
     }
 

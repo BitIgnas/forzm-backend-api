@@ -9,10 +9,13 @@ import org.forzm.demo.repository.UserRepository;
 import org.forzm.demo.repository.VerificationTokenRepository;
 import org.forzm.demo.service.MailSendingService;
 import org.forzm.demo.service.VerificationService;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.Instant;
 import java.util.UUID;
 
 @Service
@@ -31,6 +34,7 @@ public class VerificationServiceImpl implements VerificationService {
         VerificationToken verificationToken = new VerificationToken();
         verificationToken.setToken(token);
         verificationToken.setUser(user);
+        verificationToken.setTokenDuration(Instant.now().plusMillis(3600000L));
         verificationTokenRepository.save(verificationToken);
 
         return token;
@@ -39,15 +43,25 @@ public class VerificationServiceImpl implements VerificationService {
     @Override
     @Transactional
     public void verifyUser(String token) {
-        VerificationToken verificationToken = verificationTokenRepository
-                .findVerificationTokenByToken(token)
+        VerificationToken verificationToken = verificationTokenRepository.findVerificationTokenByToken(token)
                 .orElseThrow(() -> new VerificationTokenException("Token is invalid"));
-       String username = verificationToken.getUser().getUsername();
-       User user = userRepository.findByUsername(username)
-               .orElseThrow(() -> new UsernameNotFoundException("User was not found"));
 
-       user.setEnabled(true);
-       verificationTokenRepository.delete(verificationToken);
+       if(verificationToken.getTokenDuration().isAfter(Instant.now())) {
+           String username = verificationToken.getUser().getUsername();
+           User user = userRepository.findByUsername(username)
+                   .orElseThrow(() -> new UsernameNotFoundException("User was not found"));
+           user.setEnabled(true);
+           verificationTokenRepository.delete(verificationToken);
+       } else {
+           throw new VerificationTokenException("Token is expired");
+       }
+    }
+
+    @Override
+    @Transactional
+    @Scheduled(fixedRate = 7200000)
+    public void deleteExpiredVerificationsTokens() {
+        verificationTokenRepository.deleteAllByTokenDurationLessThan(Instant.now());
     }
 
     @Override

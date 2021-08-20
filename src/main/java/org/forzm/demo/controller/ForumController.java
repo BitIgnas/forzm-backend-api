@@ -36,6 +36,16 @@ public class ForumController {
         return ResponseEntity.status(HttpStatus.OK).body(forumService.findForumByName(name));
     }
 
+    @GetMapping("/{forumName}/search")
+    public ResponseEntity<List<ForumResponseDto>> searchForumsByName(@PathVariable("forumName") String name) {
+        return ResponseEntity.status(HttpStatus.OK).body(forumService.findForumByNameIgnoreCase(name));
+    }
+
+    @GetMapping("/{username}/forums")
+    public ResponseEntity<List<ForumResponseDto>> findUserForumsByUsername(@PathVariable("username") String username) {
+        return ResponseEntity.status(HttpStatus.OK).body(forumService.findUserForumsByUsername(username));
+    }
+
     @DeleteMapping("/delete")
     public ResponseEntity<?> deleteForum(@RequestBody @Valid ForumRequestDto forumRequestDto) {
         forumService.deleteForum(forumRequestDto);
