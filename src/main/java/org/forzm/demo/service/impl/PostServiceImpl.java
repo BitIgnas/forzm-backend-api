@@ -32,7 +32,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public PostRequestDto addPost(PostRequestDto postRequestDto) {
+    public PostResponseDto addPost(PostRequestDto postRequestDto) {
         Forum forum = forumRepository.getForumByName(postRequestDto.getForumName())
                 .orElseThrow(() -> new PostException("No forum was found"));
         Post post = mapToPost(postRequestDto);
@@ -40,7 +40,7 @@ public class PostServiceImpl implements PostService {
         post.setUser(authService.getCurrentUser());
         post.setCreated(Instant.now());
 
-        return mapToPostRequestDto(postRepository.save(post));
+        return mapToPostResponseDto(postRepository.save(post));
     }
 
     @Override
@@ -71,13 +71,13 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Post mapToPost(PostRequestDto postRequestDto) {
-        return modelMapper.map(postRequestDto, Post.class);
+    public Long countAllUserPosts(String username) {
+        return postRepository.countAllByUserUsername(username);
     }
 
     @Override
-    public PostRequestDto mapToPostRequestDto(Post post) {
-        return modelMapper.map(post, PostRequestDto.class);
+    public Post mapToPost(PostRequestDto postRequestDto) {
+        return modelMapper.map(postRequestDto, Post.class);
     }
 
     @Override

@@ -114,7 +114,7 @@ public class AppConfig implements CommandLineRunner {
         post3.setForum(forum5);
         post3.setUser(user);
         post3.setPostType(PostType.DISCUSSION);
-        post3.setTitle("How to get tiger 5 german tank");
+        post3.setTitle("T34 better than tiger 1");
         post3.setContent("HOW DO I GET TIGER 1 tank?????");
         post3.setCreated(Instant.now());
 
@@ -136,8 +136,8 @@ public class AppConfig implements CommandLineRunner {
 
         Comment comment1 = new Comment();
         comment1.setUser(user);
-        comment1.setPost(post4);
-        comment1.setContent("u cant get tiger because ignas has it... Die soviet trash");
+        comment1.setPost(post3);
+        comment1.setContent("Lol no");
         comment1.setDateReplied(Instant.now().plusSeconds(200000));
 
         forumRepository.save(forum1);

@@ -7,12 +7,12 @@ import org.forzm.demo.model.Post;
 import java.util.List;
 
 public interface PostService {
-    PostRequestDto addPost(PostRequestDto postRequestDto);
+    PostResponseDto addPost(PostRequestDto postRequestDto);
     List<PostResponseDto> findAllPostsByForumNameAndByPostType(String forumName, String forumType);
     PostResponseDto findByPostTitleAndId(String name, Long id);
     void deletePost(PostRequestDto postRequestDto);
     Long countAllForumPosts(String forumName);
+    Long countAllUserPosts(String username);
     Post mapToPost(PostRequestDto postRequestDto);
-    PostRequestDto mapToPostRequestDto(Post post);
     PostResponseDto mapToPostResponseDto(Post post);
 }

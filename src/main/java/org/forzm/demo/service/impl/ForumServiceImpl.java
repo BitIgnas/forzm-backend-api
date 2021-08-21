@@ -91,6 +91,4 @@ public class ForumServiceImpl implements ForumService {
     public Forum mapToForum(ForumRequestDto forumRequestDto) {
         return modelMapper.map(forumRequestDto, Forum.class);
     }
-
-
 }

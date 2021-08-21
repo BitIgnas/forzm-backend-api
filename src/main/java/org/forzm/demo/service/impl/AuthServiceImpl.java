@@ -105,7 +105,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public void checkIfUserExist(String username) {
         Optional<User> userOptional = userRepository.findByUsername(username);
-        userOptional.ifPresent(user -> {throw new UserExistsException("User already exist");});
+        userOptional.ifPresent(user -> { throw new UserExistsException("User already exist"); });
     }
 
     @Override

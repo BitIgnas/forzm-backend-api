@@ -21,7 +21,7 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping("/save")
-    public ResponseEntity<PostRequestDto> createPost(@RequestBody @Valid PostRequestDto postRequestDto) {
+    public ResponseEntity<PostResponseDto> createPost(@RequestBody @Valid PostRequestDto postRequestDto) {
         URI location = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/post/save").toUriString());
         return ResponseEntity.created(location).body(postService.addPost(postRequestDto));
     }
@@ -41,6 +41,11 @@ public class PostController {
     @GetMapping("/{forumName}/posts/count")
     public ResponseEntity<Long> getPostCountByForumName(@PathVariable("forumName") String forumName) {
         return ResponseEntity.status(HttpStatus.OK).body(postService.countAllForumPosts(forumName));
+    }
+
+    @GetMapping("/user/{username}/posts/count")
+    public ResponseEntity<Long> getPostCountByUsername(@PathVariable("username") String username) {
+        return ResponseEntity.status(HttpStatus.OK).body(postService.countAllUserPosts(username));
     }
 
     @DeleteMapping("/delete")

@@ -31,4 +31,9 @@ public class CommentController {
                                                                        @PathVariable("postId") Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(commentService.getAllPostComments(title, id));
     }
+
+    @GetMapping("/user/{username}/comments/count")
+    public ResponseEntity<Long> getUserCommentCount(@PathVariable("username") String username) {
+        return ResponseEntity.status(HttpStatus.OK).body(commentService.getUserCommentCount(username));
+    }
 }

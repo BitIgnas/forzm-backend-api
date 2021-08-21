@@ -52,6 +52,11 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    public Long getUserCommentCount(String username) {
+        return commentRepository.countAllByUserUsername(username);
+    }
+
+    @Override
     public Comment mapToComment(CommentRequestDto commentRequestDto) {
         return modelMapper.map(commentRequestDto, Comment.class);
     }

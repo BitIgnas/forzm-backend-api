@@ -85,7 +85,7 @@ public class JwtProvider {
                 Jwts.parser().setSigningKey(getPublicKey()).parseClaimsJws(token);
                 return true;
             } catch (ExpiredJwtException e) {
-                log.error(String.valueOf(e));
+                log.error(e.getMessage());
             }
 
             return false;
