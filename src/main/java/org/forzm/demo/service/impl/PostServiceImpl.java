@@ -65,6 +65,13 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public List<PostResponseDto> getAllUserPostsByUsername(String username) {
+            return postRepository.findAllByUserUsername(username).stream()
+                    .map(this::mapToPostResponseDto)
+                    .collect(Collectors.toList());
+    }
+
+    @Override
     @Transactional
     public Long countAllForumPosts(String forumName) {
         return postRepository.countAllByForumName(forumName);

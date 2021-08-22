@@ -10,6 +10,7 @@ public interface CommentService {
     CommentResponseDto addComment(CommentRequestDto commentRequestDto);
     List<CommentResponseDto> getAllPostComments(String title, Long postId);
     Long getUserCommentCount(String username);
+    List<CommentResponseDto> getAllUserCommentsByUsername(String username);
     Comment mapToComment(CommentRequestDto commentRequestDto);
     CommentResponseDto mapToCommentResponseDto(Comment comment);
 }

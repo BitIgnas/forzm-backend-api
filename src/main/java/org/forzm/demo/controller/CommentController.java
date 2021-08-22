@@ -36,4 +36,9 @@ public class CommentController {
     public ResponseEntity<Long> getUserCommentCount(@PathVariable("username") String username) {
         return ResponseEntity.status(HttpStatus.OK).body(commentService.getUserCommentCount(username));
     }
+
+    @GetMapping("user/{username}/comments")
+    public ResponseEntity<List<CommentResponseDto>> getAllUserCommentsByUsername(@PathVariable("username") String username) {
+        return ResponseEntity.status(HttpStatus.OK).body(commentService.getAllUserCommentsByUsername(username));
+    }
 }

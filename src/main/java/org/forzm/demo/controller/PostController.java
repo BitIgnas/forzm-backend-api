@@ -43,6 +43,11 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.OK).body(postService.countAllForumPosts(forumName));
     }
 
+    @GetMapping("/user/{username}/posts")
+    public ResponseEntity<List<PostResponseDto>> getAllUserPostsByUsername(@PathVariable("username") String username) {
+        return ResponseEntity.status(HttpStatus.OK).body(postService.getAllUserPostsByUsername(username));
+    }
+
     @GetMapping("/user/{username}/posts/count")
     public ResponseEntity<Long> getPostCountByUsername(@PathVariable("username") String username) {
         return ResponseEntity.status(HttpStatus.OK).body(postService.countAllUserPosts(username));

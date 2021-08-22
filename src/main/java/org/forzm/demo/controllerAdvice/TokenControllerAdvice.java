@@ -1,7 +1,9 @@
 package org.forzm.demo.controllerAdvice;
 
 import io.jsonwebtoken.ExpiredJwtException;
+import org.forzm.demo.exception.PostException;
 import org.forzm.demo.exception.RefreshTokenException;
+import org.forzm.demo.exception.VerificationTokenException;
 import org.forzm.demo.model.ApiError;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +16,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.time.Instant;
 
 @ControllerAdvice
-public class TokenExceptionHandler extends ResponseEntityExceptionHandler {
+public class TokenControllerAdvice extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({ExpiredJwtException.class})
     public ResponseEntity<ApiError> handleJwtExpiredException(WebRequest request, ExpiredJwtException exception) {
@@ -53,5 +55,18 @@ public class TokenExceptionHandler extends ResponseEntityExceptionHandler {
                 .build();
 
         return new ResponseEntity<>(apiError, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(VerificationTokenException.class)
+    public ResponseEntity<ApiError> handleEntityException(WebRequest request, RuntimeException exception) {
+        ApiError apiError = ApiError.builder()
+                .statusCode(HttpStatus.NOT_FOUND.value())
+                .httpStatus(HttpStatus.NOT_FOUND)
+                .message(exception.getMessage())
+                .description(request.getDescription(false))
+                .timestamp(Instant.now())
+                .build();
+
+        return new ResponseEntity<>(apiError, HttpStatus.NOT_FOUND);
     }
 }

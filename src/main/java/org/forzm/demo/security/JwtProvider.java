@@ -71,7 +71,6 @@ public class JwtProvider {
     }
 
     public String generateJwtWithUsername(String username) {
-
         return Jwts.builder()
                 .setSubject(username)
                 .setIssuedAt(Date.from(Instant.now()))

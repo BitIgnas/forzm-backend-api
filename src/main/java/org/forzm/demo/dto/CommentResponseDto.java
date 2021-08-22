@@ -12,6 +12,7 @@ import java.time.Instant;
 public class CommentResponseDto {
     private String content;
     private Instant dateReplied;
+    private String postTitle;
     private String userUsername;
     private String userDateCreated;
     private String userProfileImageUrl;

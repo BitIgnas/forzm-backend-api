@@ -57,6 +57,13 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    public List<CommentResponseDto> getAllUserCommentsByUsername(String username) {
+        return commentRepository.findAllByUserUsername(username).stream()
+                .map(this::mapToCommentResponseDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public Comment mapToComment(CommentRequestDto commentRequestDto) {
         return modelMapper.map(commentRequestDto, Comment.class);
     }
