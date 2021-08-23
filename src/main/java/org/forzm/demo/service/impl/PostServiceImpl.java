@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 @Slf4j
+@Transactional
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
@@ -69,6 +70,13 @@ public class PostServiceImpl implements PostService {
             return postRepository.findAllByUserUsername(username).stream()
                     .map(this::mapToPostResponseDto)
                     .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PostResponseDto> getUserFiveRecentCreatedPosts(String username) {
+        return postRepository.findTop5ByUserUsernameOrderByCreatedDesc(username).stream()
+                .map(this::mapToPostResponseDto)
+                .collect(Collectors.toList());
     }
 
     @Override

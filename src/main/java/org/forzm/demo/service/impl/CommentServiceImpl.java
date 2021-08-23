@@ -15,11 +15,14 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.Instant;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
+@Transactional
 public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
@@ -59,6 +62,13 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public List<CommentResponseDto> getAllUserCommentsByUsername(String username) {
         return commentRepository.findAllByUserUsername(username).stream()
+                .map(this::mapToCommentResponseDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CommentResponseDto> getUserFiveRecentComments(String username) {
+        return commentRepository.findTop5ByUserUsernameOrderByDateRepliedAsc(username).stream()
                 .map(this::mapToCommentResponseDto)
                 .collect(Collectors.toList());
     }

@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
+@Transactional
 public class ForumServiceImpl implements ForumService {
 
     private final ForumRepository forumRepository;

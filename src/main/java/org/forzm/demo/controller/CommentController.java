@@ -37,8 +37,13 @@ public class CommentController {
         return ResponseEntity.status(HttpStatus.OK).body(commentService.getUserCommentCount(username));
     }
 
-    @GetMapping("user/{username}/comments")
+    @GetMapping("/user/{username}/comments")
     public ResponseEntity<List<CommentResponseDto>> getAllUserCommentsByUsername(@PathVariable("username") String username) {
         return ResponseEntity.status(HttpStatus.OK).body(commentService.getAllUserCommentsByUsername(username));
+    }
+
+    @GetMapping("/user/{username}/comments/recent")
+    public ResponseEntity<List<CommentResponseDto>> getUserFiveRecentCreatedComments(@PathVariable("username") String username) {
+        return ResponseEntity.status(HttpStatus.OK).body(commentService.getUserFiveRecentComments(username));
     }
 }

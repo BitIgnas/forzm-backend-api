@@ -53,6 +53,11 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.OK).body(postService.countAllUserPosts(username));
     }
 
+    @GetMapping("/user/{username}/posts/recent")
+    public ResponseEntity<List<PostResponseDto>> getUserFiveRecentCreatedPosts(@PathVariable("username") String username) {
+        return ResponseEntity.status(HttpStatus.OK).body(postService.getUserFiveRecentCreatedPosts(username));
+    }
+
     @DeleteMapping("/delete")
     public ResponseEntity<?> deletePost(@RequestBody @Valid PostRequestDto postRequestDto) {
         postService.deletePost(postRequestDto);

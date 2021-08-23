@@ -61,7 +61,7 @@ public class VerificationServiceImpl implements VerificationService {
     @Transactional
     @Scheduled(fixedRate = 7200000)
     public void deleteExpiredVerificationsTokens() {
-        verificationTokenRepository.deleteAllByTokenDurationLessThan(Instant.now());
+
     }
 
     @Override

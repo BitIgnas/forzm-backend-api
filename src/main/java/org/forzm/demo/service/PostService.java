@@ -12,6 +12,7 @@ public interface PostService {
     PostResponseDto findByPostTitleAndId(String name, Long id);
     void deletePost(PostRequestDto postRequestDto);
     List<PostResponseDto> getAllUserPostsByUsername(String username);
+    List<PostResponseDto> getUserFiveRecentCreatedPosts(String username);
     Long countAllForumPosts(String forumName);
     Long countAllUserPosts(String username);
     Post mapToPost(PostRequestDto postRequestDto);

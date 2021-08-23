@@ -11,6 +11,7 @@ public interface CommentService {
     List<CommentResponseDto> getAllPostComments(String title, Long postId);
     Long getUserCommentCount(String username);
     List<CommentResponseDto> getAllUserCommentsByUsername(String username);
+    List<CommentResponseDto> getUserFiveRecentComments(String username);
     Comment mapToComment(CommentRequestDto commentRequestDto);
     CommentResponseDto mapToCommentResponseDto(Comment comment);
 }

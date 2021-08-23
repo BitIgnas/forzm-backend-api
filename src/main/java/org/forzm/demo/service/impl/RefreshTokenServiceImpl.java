@@ -12,6 +12,8 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
+@Transactional
+
 public class RefreshTokenServiceImpl implements RefreshTokenService {
 
     private final RefreshTokenRepository refreshTokenRepository;

@@ -25,7 +25,7 @@ public class MailSendingServiceImpl implements MailSendingService {
 
         try {
             messageHelper.setTo(to);
-            messageHelper.setFrom("Ignas&Ko@gmail.com");
+            messageHelper.setFrom("ignotas.tunaitis03@gmail.com");
             messageHelper.setSubject("Please activate your account");
             messageHelper.setText(mailContentBuilder.build(link), true);
             javaMailSender.send(mimeMessage);

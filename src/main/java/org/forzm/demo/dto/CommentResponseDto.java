@@ -13,6 +13,9 @@ public class CommentResponseDto {
     private String content;
     private Instant dateReplied;
     private String postTitle;
+    private Long postPostId;
+    private String postPostType;
+    private String postForumName;
     private String userUsername;
     private String userDateCreated;
     private String userProfileImageUrl;

@@ -12,6 +12,7 @@ import java.util.Optional;
 public interface PostRepository extends JpaRepository<Post, Long> {
     Optional<Post> findPostByTitleAndId(String title, Long id);
     List<Post> findAllByUserUsername(String username);
+    List<Post> findTop5ByUserUsernameOrderByCreatedDesc(String username);
     List<Post> findAllByForumNameAndPostType(String forumName, PostType postType);
     Long countAllByForumName(String forumName);
     Long countAllByUserUsername(String username);
