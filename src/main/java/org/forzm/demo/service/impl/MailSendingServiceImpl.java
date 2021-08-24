@@ -25,7 +25,7 @@ public class MailSendingServiceImpl implements MailSendingService {
 
     @Override
     public void sendVerificationMail(String to, String token) {
-        String link = url + token;
+        String link = url + "/api/verify" +  token;
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
 
