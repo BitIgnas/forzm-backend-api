@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.transaction.Transactional;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -42,6 +43,7 @@ public class StorageServiceImpl implements StorageService {
     private static final List<String> CONTENT_TYPES = Arrays.asList("image/png", "image/jpeg", "image/jpg");
 
     @Override
+    @Transactional
     public void saveUserProfile(MultipartFile multipartFile, String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new NoUserFoundException("No user was found"));
@@ -56,6 +58,7 @@ public class StorageServiceImpl implements StorageService {
     }
 
     @Override
+    @Transactional
     public void saveForumImage(MultipartFile multipartFile, String title) {
         String forumName = decodeUrl(title);
 
