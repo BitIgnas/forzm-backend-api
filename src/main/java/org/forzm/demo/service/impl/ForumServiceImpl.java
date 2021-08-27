@@ -33,7 +33,8 @@ public class ForumServiceImpl implements ForumService {
     @Override
     @Transactional
     public ForumResponseDto createForum(ForumRequestDto forumRequestDto) {
-        checkIfForumExist(forumRequestDto.getName());
+        Optional<Forum> forumOptional = forumRepository.getForumByName(forumRequestDto.getName());
+        forumOptional.ifPresent(forum -> { throw new ForumExistsException("Forum already exists");});
         Forum forum = mapToForum(forumRequestDto);
         forum.setUser(authService.getCurrentUser());
         forum.setCreated(Instant.now());
@@ -43,16 +44,15 @@ public class ForumServiceImpl implements ForumService {
 
     @Override
     public List<ForumResponseDto> findForumByNameIgnoreCase(String name) {
-        return forumRepository.findAll().stream()
+        return forumRepository.getAllByNameContainingIgnoreCase(name).stream()
                 .map(this::mapToForumResponseDto)
-                .filter(forumResponseDto -> forumResponseDto.getName().toLowerCase().contains(name.toLowerCase()))
                 .collect(Collectors.toList());
     }
 
     @Override
     @Transactional
     public List<ForumResponseDto> getAllForums() {
-        return forumRepository.getAllByOrderByPostsDesc().stream()
+        return forumRepository.getAllByOrderByPostsAsc().stream()
                 .map(this::mapToForumResponseDto)
                 .distinct()
                 .collect(Collectors.toList());
@@ -60,15 +60,13 @@ public class ForumServiceImpl implements ForumService {
 
     @Override
     @Transactional
-    public void deleteForum(ForumRequestDto forumRequestDto) {
-        forumRepository.delete(mapToForum(forumRequestDto));
+    public void deleteForum(String name) {
+        Forum forum = forumRepository.getForumByName(name)
+                .orElseThrow(() -> new ForumException("No forum was found"));
+
+        forumRepository.delete(forum);
     }
 
-    @Override
-    public void checkIfForumExist(String forumName) {
-        Optional<Forum> forumOptional = forumRepository.getForumByName(forumName);
-        forumOptional.ifPresent(forum -> { throw new ForumExistsException("Forum already exists");});
-    }
 
     @Override
     public List<ForumResponseDto> findUserForumsByUsername(String username) {

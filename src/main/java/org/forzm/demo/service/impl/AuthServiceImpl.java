@@ -39,7 +39,9 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void register(RegisterRequestDto registerRequestDto) {
-        checkIfUserExist(registerRequestDto.getUsername());
+        Optional<User> userOptional = userRepository.findByUsername(registerRequestDto.getUsername());
+        userOptional.ifPresent(user -> { throw new UserExistsException("User already exist");});
+
         User user = new User();
         user.setUsername(registerRequestDto.getUsername());
         user.setPassword(passwordEncoder.encode(registerRequestDto.getPassword()));
@@ -100,12 +102,6 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public void logout(RefreshTokenRequestDto refreshTokenRequestDto) {
         refreshTokenRepository.deleteByToken(refreshTokenRequestDto.getRefreshToken());
-    }
-
-    @Override
-    public void checkIfUserExist(String username) {
-        Optional<User> userOptional = userRepository.findByUsername(username);
-        userOptional.ifPresent(user -> { throw new UserExistsException("User already exist"); });
     }
 
     @Override

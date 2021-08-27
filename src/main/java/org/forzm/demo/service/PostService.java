@@ -10,7 +10,6 @@ public interface PostService {
     PostResponseDto addPost(PostRequestDto postRequestDto);
     List<PostResponseDto> findAllPostsByForumNameAndByPostType(String forumName, String forumType);
     PostResponseDto findByPostTitleAndId(String name, Long id);
-    void deletePost(PostRequestDto postRequestDto);
     List<PostResponseDto> getAllUserPostsByUsername(String username);
     List<PostResponseDto> getUserFiveRecentCreatedPosts(String username);
     Long countAllForumPosts(String forumName);

@@ -46,9 +46,9 @@ public class ForumController {
         return ResponseEntity.status(HttpStatus.OK).body(forumService.findUserForumsByUsername(username));
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<?> deleteForum(@RequestBody @Valid ForumRequestDto forumRequestDto) {
-        forumService.deleteForum(forumRequestDto);
+    @DeleteMapping("/{forumName}/delete")
+    public ResponseEntity<?> deleteForum(@PathVariable("forumName") String forumName) {
+        forumService.deleteForum(forumName);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

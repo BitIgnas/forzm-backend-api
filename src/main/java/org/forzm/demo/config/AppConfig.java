@@ -25,6 +25,7 @@ import java.time.Instant;
 @EnableScheduling
 @Transactional
 public class AppConfig implements CommandLineRunner {
+
     private final UserRepository userRepository;
     private final ForumRepository forumRepository;
     private final PostRepository postRepository;

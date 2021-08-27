@@ -13,6 +13,8 @@ import java.util.Optional;
 public interface ForumRepository extends JpaRepository<Forum, Long> {
     Optional<Forum> getForumByName(String name);
     List<Forum> findForumsByUser_Username(String username);
-    List<Forum> getAllByOrderByPostsDesc();
+    List<Forum> getAllByOrderByPostsAsc();
+    List<Forum> getAllByNameContainingIgnoreCase(String name);
+    void deleteByName(String name);
     Long countAllByUserUsername(String username);
 }

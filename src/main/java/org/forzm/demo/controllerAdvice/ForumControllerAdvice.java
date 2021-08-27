@@ -1,5 +1,6 @@
 package org.forzm.demo.controllerAdvice;
 
+import org.forzm.demo.exception.ForumException;
 import org.forzm.demo.exception.ForumExistsException;
 import org.forzm.demo.model.ApiError;
 import org.springframework.http.HttpStatus;
@@ -24,5 +25,18 @@ public class ForumControllerAdvice {
                 .build();
 
         return new ResponseEntity<>(apiError, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler({ForumException.class})
+    public ResponseEntity<ApiError> handleForumException(WebRequest request, RuntimeException exception) {
+        ApiError apiError = ApiError.builder()
+                .statusCode(HttpStatus.NOT_FOUND.value())
+                .httpStatus(HttpStatus.NOT_FOUND)
+                .message(exception.getMessage())
+                .description(request.getDescription(false))
+                .timestamp(Instant.now())
+                .build();
+
+        return new ResponseEntity<>(apiError, HttpStatus.NOT_FOUND);
     }
 }

@@ -11,8 +11,7 @@ import java.util.List;
 public interface ForumService {
     ForumResponseDto createForum(ForumRequestDto forumRequestDto);
     List<ForumResponseDto> findForumByNameIgnoreCase(String name);
-    void deleteForum(ForumRequestDto ForumRequestDto);
-    void checkIfForumExist(String forumName);
+    void deleteForum(String name);
     List<ForumResponseDto> findUserForumsByUsername(String username);
     ForumResponseDto findForumByName(String name);
     ForumResponseDto mapToForumResponseDto(Forum forum);

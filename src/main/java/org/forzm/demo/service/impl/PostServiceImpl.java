@@ -60,12 +60,6 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    @Transactional
-    public void deletePost(PostRequestDto postRequestDto) {
-        postRepository.delete(mapToPost(postRequestDto));
-    }
-
-    @Override
     public List<PostResponseDto> getAllUserPostsByUsername(String username) {
             return postRepository.findAllByUserUsername(username).stream()
                     .map(this::mapToPostResponseDto)
