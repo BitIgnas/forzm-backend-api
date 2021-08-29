@@ -53,7 +53,7 @@ public class VerificationServiceImpl implements VerificationService {
            user.setEnabled(true);
            verificationTokenRepository.delete(verificationToken);
        } else {
-           throw new VerificationTokenException("Token is expired");
+           throw new VerificationTokenException("Token is invalid");
        }
     }
 

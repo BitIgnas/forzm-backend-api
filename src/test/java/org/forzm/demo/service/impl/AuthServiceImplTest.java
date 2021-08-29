@@ -234,6 +234,5 @@ public class AuthServiceImplTest {
         assertThat(actualUserResponseDto).isNotNull();
         assertThat(actualUserResponseDto).isInstanceOf(UserResponseDto.class);
         assertThat(actualUserResponseDto).isEqualTo(userResponseDto);
-
     }
 }

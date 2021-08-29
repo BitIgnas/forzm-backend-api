@@ -26,7 +26,7 @@ public class Forum {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
-    @OneToMany(mappedBy = "forum", fetch = FetchType.EAGER,
+    @OneToMany(mappedBy = "forum", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
     private List<Post> posts;
     private Instant created;

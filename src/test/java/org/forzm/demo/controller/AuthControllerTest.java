@@ -3,21 +3,13 @@ package org.forzm.demo.controller;
 import org.forzm.demo.dto.*;
 import org.forzm.demo.model.RefreshToken;
 import org.forzm.demo.service.AuthService;
-import org.forzm.demo.service.impl.AuthServiceImpl;
-import org.forzm.demo.service.impl.ForumServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultActions;
-
 import java.time.Instant;
-
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -43,7 +35,9 @@ public class AuthControllerTest {
         mockMvc.perform(post("/api/auth/register")
                 .accept(APPLICATION_JSON)
                 .contentType(APPLICATION_JSON)
-                .content("{\"username\": \"TEST\", \"email\":\"TEST@gmail.com\", \"password\": \"TEST\"}"))
+                .content("{\"username\": \"" + registerRequestDto.getUsername() + "\"," +
+                        " \"email\":\"" + registerRequestDto.getEmail() + "\"," +
+                        " \"password\": \"" + registerRequestDto.getPassword() + "\"}"))
                 .andExpect(status().isCreated());
 
         verify(authService, times(2)).register(any(RegisterRequestDto.class));
@@ -124,6 +118,5 @@ public class AuthControllerTest {
 
         verify(authService, times(1)).logout(any(RefreshTokenRequestDto.class));
         verifyNoMoreInteractions(authService);
-
     }
 }

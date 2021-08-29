@@ -62,7 +62,7 @@ public class StorageControllerTest {
 
         storageService.saveForumImage(jpegFile, "USER");
 
-        MvcResult mockMvcResult = mockMvc.perform(multipart("/api/storage/forum/{forumName}/upload", "USER")
+        MvcResult mockMvcResult = mockMvc.perform(multipart("/api/storage/forum/{forumName}/upload", "USER_FORUM")
                 .file("file", jpegFile.getBytes())
                 .contentType(MediaType.IMAGE_JPEG))
                 .andExpect(status().isCreated())

@@ -60,7 +60,9 @@ public class ForumControllerTest {
         mockMvc.perform(post("/api/forum/save", forumRequestDto)
                 .accept(APPLICATION_JSON)
                 .contentType(APPLICATION_JSON)
-                .content("{\"name\": \"FORUM_TEST\", \"forumGameType\":\"FPS\", \"description\": \"FORUM_DESC\"}"))
+                .content("{\"name\": \"" + forumRequestDto.getName() + "\"," +
+                        " \"forumGameType\":\"" +  forumRequestDto.getForumGameType() +"\"," +
+                        " \"description\": \"" + forumRequestDto.getDescription() + "\"}"))
                 .andExpect(status().isCreated());
 
         verify(forumService, times(1)).createForum(any(ForumRequestDto.class));
