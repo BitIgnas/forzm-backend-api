@@ -1,0 +1,1 @@
+INSERT INTO verification_token (`id`, `token`) VALUES (1, 'VERIFICATION-TOKEN');
