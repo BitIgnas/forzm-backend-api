@@ -75,6 +75,23 @@ public class StorageServiceImpl implements StorageService {
     }
 
     @Override
+    public void updateUserProfile(MultipartFile multipartFile, String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new NoUserFoundException("No user was found"));
+
+        if(user.getProfileImageUrl() != null) {
+            fileService.deleteFile(user.getProfileImageUrl(), userBucket);
+            String imgUrl = fileService.uploadFile(multipartFile, userBucket);
+            user.setProfileImageUrl(imgUrl);
+        } else {
+            String imgUrl = fileService.uploadFile(multipartFile, userBucket);
+            user.setProfileImageUrl(imgUrl);
+        }
+
+        userRepository.save(user);
+    }
+
+    @Override
     public String decodeUrl(String title) {
         try {
             return URLDecoder.decode(title, StandardCharsets.UTF_8.toString());

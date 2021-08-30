@@ -32,7 +32,7 @@ public class MailSendingServiceImpl implements MailSendingService {
         try {
             messageHelper.setTo(to);
             messageHelper.setFrom("ignotas.tunaitis03@gmail.com");
-            messageHelper.setSubject("Please activate your account");
+            messageHelper.setSubject("Welcome to FORUM-BAY. Please activate your account");
             messageHelper.setText(mailContentBuilder.build(link), true);
             javaMailSender.send(mimeMessage);
         } catch (MessagingException e) {

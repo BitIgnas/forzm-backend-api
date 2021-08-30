@@ -22,7 +22,7 @@ import java.time.Instant;
 @Slf4j
 public class JwtProvider {
 
-    private static final Long JWT_EXPIRATION = 20000L;
+    private static final Long JWT_EXPIRATION = 900000L;
 
     private static final String KEYSTORE_PASSWORD = "password";
 

@@ -21,8 +21,17 @@ public class StorageController {
     public ResponseEntity<String> uploadUserFile(@RequestParam("file") MultipartFile multipartFile,
                                                  @PathVariable("username") String username) {
         URI location = URI.create(ServletUriComponentsBuilder
-                .fromCurrentContextPath().path("/api/storage/save/file").toUriString());
+                .fromCurrentContextPath().path("/api/storage/user/" + username + "/upload").toUriString());
         storageService.saveUserProfile(multipartFile, username);
+        return ResponseEntity.created(location).body("Image saved");
+    }
+
+    @PostMapping("/user/{username}/profile/update")
+    public ResponseEntity<String> updateUserProfile(@RequestParam("file") MultipartFile multipartFile,
+                                                    @PathVariable("username") String username) {
+        URI location = URI.create(ServletUriComponentsBuilder
+                .fromCurrentContextPath().path("/api/storage/user/" + username + "/profile/update").toUriString());
+        storageService.updateUserProfile(multipartFile, username);
         return ResponseEntity.created(location).body("Image saved");
     }
 

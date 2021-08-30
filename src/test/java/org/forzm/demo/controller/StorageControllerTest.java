@@ -52,7 +52,6 @@ public class StorageControllerTest {
 
         assertThat(mockMvcResult).isNotNull();
         assertThat(mockMvcResult.getResponse().getContentAsString()).isEqualTo("Image saved");
-
     }
 
     @Test
