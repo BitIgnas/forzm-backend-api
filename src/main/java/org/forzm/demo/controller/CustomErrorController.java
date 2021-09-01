@@ -10,12 +10,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
-public class CustomErrorController implements ErrorController {
+public class CustomErrorController {
 
-    @RequestMapping("/error")
-    public ResponseEntity<?> handleError(final HttpServletRequest request, final HttpServletResponse response) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(request.getAttribute("javax.servlet.error.exception"));
-    }
+//    @RequestMapping("/error")
+//    public ResponseEntity<?> handleError(final HttpServletRequest request, final HttpServletResponse response) {
+////        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(request.getAttribute("javax.servlet.error.exception"));
+//    }
 
 
 }

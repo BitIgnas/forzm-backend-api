@@ -3,6 +3,8 @@ package org.forzm.demo.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -27,7 +29,7 @@ public class Forum {
     @JoinColumn(name = "user_id")
     private User user;
     @OneToMany(mappedBy = "forum", fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL)
+            cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Post> posts;
     private Instant created;
 }

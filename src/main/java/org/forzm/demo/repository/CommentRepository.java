@@ -11,4 +11,5 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     Long countAllByUserUsername(String username);
     List<Comment> findAllByUserUsername(String username);
     List<Comment> findTop5ByUserUsernameOrderByDateRepliedAsc(String username);
+    void deleteAllByPost(Post post);
 }

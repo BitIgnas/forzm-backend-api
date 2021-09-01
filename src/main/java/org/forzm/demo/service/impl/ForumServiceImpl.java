@@ -6,7 +6,10 @@ import org.forzm.demo.dto.ForumRequestDto;
 import org.forzm.demo.exception.ForumException;
 import org.forzm.demo.exception.ForumExistsException;
 import org.forzm.demo.model.Forum;
+import org.forzm.demo.model.Post;
+import org.forzm.demo.repository.CommentRepository;
 import org.forzm.demo.repository.ForumRepository;
+import org.forzm.demo.repository.PostRepository;
 import org.forzm.demo.service.AuthService;
 import org.forzm.demo.service.ForumService;
 import org.modelmapper.ModelMapper;
@@ -27,6 +30,8 @@ import java.util.stream.Collectors;
 public class ForumServiceImpl implements ForumService {
 
     private final ForumRepository forumRepository;
+    private final PostRepository postRepository;
+    private final CommentRepository commentRepository;
     private final ModelMapper modelMapper;
     private final AuthService authService;
 
@@ -64,9 +69,15 @@ public class ForumServiceImpl implements ForumService {
         Forum forum = forumRepository.getForumByName(name)
                 .orElseThrow(() -> new ForumException("No forum was found"));
 
+        postRepository.findAllByForum(forum).forEach(commentRepository::deleteAllByPost);
+        postRepository.deleteAllByForum(forum);
         forumRepository.delete(forum);
     }
 
+    @Override
+    public boolean checkIfForumIsUsers(String forumName, String username) {
+        return forumRepository.findForumsByNameAndUserUsername(forumName, username).isPresent();
+    }
 
     @Override
     public List<ForumResponseDto> findUserForumsByUsername(String username) {

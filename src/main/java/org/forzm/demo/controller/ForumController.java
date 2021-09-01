@@ -31,6 +31,13 @@ public class ForumController {
         return ResponseEntity.status(HttpStatus.OK).body(forumService.getAllForums());
     }
 
+    @GetMapping("/{forumName}/user/{username}")
+    public ResponseEntity<Boolean> checkIfForumIsUsers(@PathVariable("forumName") String forumName,
+                                                     @PathVariable("username") String username) {
+        return ResponseEntity.status(HttpStatus.OK).body(forumService.checkIfForumIsUsers(forumName, username));
+
+    }
+
     @GetMapping("/{forumName}")
     public ResponseEntity<ForumResponseDto> getForumByName(@PathVariable("forumName") String name) {
         return ResponseEntity.status(HttpStatus.OK).body(forumService.findForumByName(name));

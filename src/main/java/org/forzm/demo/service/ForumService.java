@@ -12,6 +12,7 @@ public interface ForumService {
     ForumResponseDto createForum(ForumRequestDto forumRequestDto);
     List<ForumResponseDto> findForumByNameIgnoreCase(String name);
     void deleteForum(String name);
+    boolean checkIfForumIsUsers(String forumName, String username);
     List<ForumResponseDto> findUserForumsByUsername(String username);
     ForumResponseDto findForumByName(String name);
     ForumResponseDto mapToForumResponseDto(Forum forum);

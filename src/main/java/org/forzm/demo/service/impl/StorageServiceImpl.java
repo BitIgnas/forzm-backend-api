@@ -65,12 +65,14 @@ public class StorageServiceImpl implements StorageService {
         Forum forum = forumRepository.getForumByName(forumName)
                 .orElseThrow(() -> new ForumException("No forum was found"));
 
-        if (CONTENT_TYPES.contains(multipartFile.getContentType())) {
+        if (CONTENT_TYPES.contains(multipartFile.getContentType()) && multipartFile.getSize() < 10485760) {
             String imgUrl = fileService.uploadFile(multipartFile, forumBucket);
             forum.setImageUrl(imgUrl);
             forumRepository.save(forum);
-        } else {
+        } else if (!CONTENT_TYPES.contains(multipartFile.getContentType())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        } else if (multipartFile.getSize() < 10485760) {
+            throw new ResponseStatusException(HttpStatus.PAYLOAD_TOO_LARGE);
         }
     }
 
@@ -79,13 +81,18 @@ public class StorageServiceImpl implements StorageService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new NoUserFoundException("No user was found"));
 
-        if(user.getProfileImageUrl() != null) {
+        if (CONTENT_TYPES.contains(multipartFile.getContentType()) && user.getProfileImageUrl() != null &&
+                multipartFile.getSize() < 10485760) {
             fileService.deleteFile(user.getProfileImageUrl(), userBucket);
             String imgUrl = fileService.uploadFile(multipartFile, userBucket);
             user.setProfileImageUrl(imgUrl);
-        } else {
+        } else if (user.getProfileImageUrl() == null) {
             String imgUrl = fileService.uploadFile(multipartFile, userBucket);
             user.setProfileImageUrl(imgUrl);
+        } else if (!CONTENT_TYPES.contains(multipartFile.getContentType())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        } else if (multipartFile.getSize() > 10485760) {
+            throw new ResponseStatusException(HttpStatus.PAYLOAD_TOO_LARGE);
         }
 
         userRepository.save(user);

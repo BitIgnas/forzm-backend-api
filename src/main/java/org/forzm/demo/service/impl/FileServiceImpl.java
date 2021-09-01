@@ -50,9 +50,10 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public void deleteFile(String url, String bucketName) {
+        String key = url.substring(url.lastIndexOf('/')+1);
 
         try {
-            amazonS3Client.deleteObject(new DeleteObjectRequest(bucketName, url.substring(url.lastIndexOf('/')+1)));
+            amazonS3Client.deleteObject(new DeleteObjectRequest(bucketName, key));
         } catch (Exception exception) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
