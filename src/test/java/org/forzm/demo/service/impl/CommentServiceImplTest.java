@@ -49,7 +49,7 @@ public class CommentServiceImplTest {
     void shouldAddComment() {
         User currentUser = new User(1L, "test", "test@gmail.com", "TEST", true, null, null);
         Forum forum = new Forum(1L, "TEST_FORUM", "FORUM DESC", ForumGameType.FPS, null, currentUser, emptyList(), Instant.now());
-        Post post = new Post(1L, "TEST_TITLE", "TEST CONTENT", null, PostType.DISCUSSION, currentUser, forum, null, null);
+        Post post = new Post(1L, "TEST_TITLE", "TEST CONTENT", null, PostType.DISCUSSION, null,  currentUser, forum, null, null);
         CommentRequestDto commentRequestDto = new CommentRequestDto("TEST CONTENT", "TEST_TITLE", 1L);
         Comment comment = new Comment(1L, "TEST CONTENT", null, post, currentUser);
 
@@ -77,7 +77,7 @@ public class CommentServiceImplTest {
     void getAllPostComments() {
         Comment comment = new Comment(1L, "TEST CONTENT", null, null, null);
         CommentResponseDto commentResponseDto = new CommentResponseDto("TEST CONTENT", null, null, null, null, null, null, null, null);
-        Post post = new Post(1L, "TEST_TITLE", "TEST CONTENT", null, PostType.DISCUSSION, null, null, null, null);
+        Post post = new Post(1L, "TEST_TITLE", "TEST CONTENT", null, PostType.DISCUSSION, null, null, null, null, null);
         List<Comment> comments = Collections.singletonList(comment);
 
         when(postRepository.findPostByTitleAndId(anyString(), anyLong())).thenReturn(Optional.of(post));

@@ -49,7 +49,7 @@ public class PostServiceImplTest {
         User currentUser = new User(1L, "test", "test@gmail.com", "TEST", true, null, null);
         PostRequestDto postRequestDto = new PostRequestDto("TEST_TITLE", "TEST CONTENT", null, null, "TEST_TITLE");
         Forum forum = new Forum(1L, "TEST_FORUM", "FORUM DESC", ForumGameType.FPS, null, currentUser, emptyList(), Instant.now());
-        Post post = new Post(1L, "TEST_TITLE", "TEST CONTENT", null, null, null, forum, null, null);
+        Post post = new Post(1L, "TEST_TITLE", "TEST CONTENT", null, null, null, null, forum, null, null);
 
         when(forumRepository.getForumByName(postRequestDto.getForumName())).thenReturn(Optional.of(forum));
         when(modelMapper.map(postRequestDto, Post.class)).thenReturn(post);
@@ -76,8 +76,8 @@ public class PostServiceImplTest {
 
     @Test
     void findAllPostsByForumNameAndByPostType() {
-        Post post = new Post(1L, "TEST_TITLE", "TEST CONTENT", null, null, null, null, null, null);
-        PostResponseDto postResponseDto = new PostResponseDto("TEST_TITLE", "TEST CONTENT", null, null, null, null, null, null, null, null, null);
+        Post post = new Post(1L, "TEST_TITLE", "TEST CONTENT", null, null, null, null, null, null, null);
+        PostResponseDto postResponseDto = new PostResponseDto("TEST_TITLE", "TEST CONTENT", null, null, null, null, null, null, null, null, null, null);
         List<Post> posts = Collections.singletonList(post);
 
         when(postRepository.findAllByForumNameAndPostType(anyString(), any(PostType.class))).thenReturn(posts);
@@ -99,8 +99,8 @@ public class PostServiceImplTest {
 
     @Test
     void findByPostTitleAndId() {
-        Post post = new Post(1L, "TEST_TITLE", "TEST CONTENT", null, null, null, null, null, null);
-        PostResponseDto postResponseDto = new PostResponseDto("TEST_TITLE", "TEST CONTENT", null, null, null, null, null, null, null, null, null);
+        Post post = new Post(1L, "TEST_TITLE", "TEST CONTENT", null, null, null, null, null, null, null);
+        PostResponseDto postResponseDto = new PostResponseDto("TEST_TITLE", "TEST CONTENT", null, null, null, null, null, null, null, null, null, null);
 
         when(postRepository.findPostByTitleAndId(anyString(), anyLong())).thenReturn(Optional.of(post));
         when(modelMapper.map(post, PostResponseDto.class)).thenReturn(postResponseDto);
@@ -118,8 +118,8 @@ public class PostServiceImplTest {
 
     @Test
     void getAllUserPostsByUsername() {
-        Post post = new Post(1L, "TEST_TITLE", "TEST CONTENT", null, null, null, null, null, null);
-        PostResponseDto postResponseDto = new PostResponseDto("TEST_TITLE", "TEST CONTENT", null, null, null, null, null, null, null, null, null);
+        Post post = new Post(1L, "TEST_TITLE", "TEST CONTENT", null, null, null, null, null, null, null);
+        PostResponseDto postResponseDto = new PostResponseDto("TEST_TITLE", "TEST CONTENT", null, null, null, null, null, null, null, null, null, null);
         List<Post> posts = Collections.singletonList(post);
 
         when(postRepository.findAllByUserUsername(anyString())).thenReturn(posts);
@@ -140,8 +140,8 @@ public class PostServiceImplTest {
 
     @Test
     void getUserFiveRecentCreatedPosts() {
-        Post post = new Post(1L, "TEST_TITLE", "TEST CONTENT", null, null, null, null, null, null);
-        PostResponseDto postResponseDto = new PostResponseDto("TEST_TITLE", "TEST CONTENT", null, null, null, null, null, null, null, null, null);
+        Post post = new Post(1L, "TEST_TITLE", "TEST CONTENT", null, null, null, null, null, null, null);
+        PostResponseDto postResponseDto = new PostResponseDto("TEST_TITLE", "TEST CONTENT", null, null, null, null, null, null, null, null, null, null);
         List<Post> posts = Collections.singletonList(post);
 
         when(postRepository.findTop5ByUserUsernameOrderByCreatedDesc(anyString())).thenReturn(posts);
@@ -194,7 +194,7 @@ public class PostServiceImplTest {
 
     @Test
     void mapToPost() {
-        Post post = new Post(1L, "TEST_TITLE", "TEST CONTENT", null, null, null, null, null, null);
+        Post post = new Post(1L, "TEST_TITLE", "TEST CONTENT", null, null, null, null, null, null, null);
         PostRequestDto postRequestDto = new PostRequestDto("TEST_TITLE", "TEST CONTENT", null, null, "TEST_TITLE");
 
         when(modelMapper.map(postRequestDto, Post.class)).thenReturn(post);
@@ -212,8 +212,8 @@ public class PostServiceImplTest {
 
     @Test
     void mapToPostResponseDto() {
-        Post post = new Post(1L, "TEST_TITLE", "TEST CONTENT", null, null, null, null, null, null);
-        PostResponseDto postResponseDto = new PostResponseDto("TEST_TITLE", "TEST CONTENT", null, null, null, null, null, null, null, null, null);
+        Post post = new Post(1L, "TEST_TITLE", "TEST CONTENT", null, null, null, null, null, null, null);
+        PostResponseDto postResponseDto = new PostResponseDto("TEST_TITLE", "TEST CONTENT", null, null, null, null, null, null, null, null, null, null);
 
         when(modelMapper.map(post, PostResponseDto.class)).thenReturn(postResponseDto);
 

@@ -93,9 +93,7 @@ public class ForumServiceImpl implements ForumService {
     }
 
     @Override
-    public ForumResponseDto mapToForumResponseDto(Forum forum) {
-        return modelMapper.map(forum, ForumResponseDto.class);
-    }
+    public ForumResponseDto mapToForumResponseDto(Forum forum) { return modelMapper.map(forum, ForumResponseDto.class); }
 
     @Override
     public Forum mapToForum(ForumRequestDto forumRequestDto) {

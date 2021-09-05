@@ -20,6 +20,7 @@ public class PostResponseDto {
     private String created;
     @Enumerated(EnumType.STRING)
     private PostType postType;
+    private String postImageUrl;
     private String forumForumName;
     private String forumImageUrl;
     private String userUsername;

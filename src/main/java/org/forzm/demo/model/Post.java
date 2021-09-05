@@ -24,6 +24,7 @@ public class Post {
     private String contentMarkup;
     @Enumerated(EnumType.STRING)
     private PostType postType;
+    private String postImageUrl;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;

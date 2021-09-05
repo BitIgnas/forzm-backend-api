@@ -43,4 +43,14 @@ public class StorageController {
         storageService.saveForumImage(multipartFile, forumTitle);
         return ResponseEntity.created(location).body("Image saved");
     }
+
+    @PostMapping("/post/{postTitle}/id/{postId}/upload")
+    public ResponseEntity<String> uploadPostFile(@RequestParam("file") MultipartFile multipartFile,
+                                                 @PathVariable("postTitle") String postTitle,
+                                                 @PathVariable("postId") Long postId) {
+        URI location = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/api/storage/post/" + postTitle + "/id/" + postId + "/upload").toUriString());
+        storageService.savePostImage(multipartFile, postTitle, postId);
+        return ResponseEntity.created(location).body("Image saved");
+    }
 }

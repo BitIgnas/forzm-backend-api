@@ -7,6 +7,7 @@ import org.forzm.demo.model.ApiError;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNullApi;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -38,9 +39,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleHttpMediaTypeNotSupported(HttpMediaTypeNotSupportedException ex,
-                                                                     HttpHeaders headers,
-                                                                     HttpStatus status,
-                                                                     WebRequest request) {
+                                                                                 HttpHeaders headers,
+                                                                                 HttpStatus status,
+                                                                                 WebRequest request) {
         ApiError apiError = ApiError.builder()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .httpStatus(HttpStatus.BAD_REQUEST)

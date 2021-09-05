@@ -5,9 +5,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.forzm.demo.exception.ForumException;
 import org.forzm.demo.exception.NoUserFoundException;
+import org.forzm.demo.exception.PostException;
 import org.forzm.demo.model.Forum;
+import org.forzm.demo.model.Post;
 import org.forzm.demo.model.User;
 import org.forzm.demo.repository.ForumRepository;
+import org.forzm.demo.repository.PostRepository;
 import org.forzm.demo.repository.UserRepository;
 import org.forzm.demo.service.AuthService;
 import org.forzm.demo.service.FileService;
@@ -32,6 +35,7 @@ public class StorageServiceImpl implements StorageService {
 
     private final UserRepository userRepository;
     private final ForumRepository forumRepository;
+    private final PostRepository postRepository;
     private final FileService fileService;
 
     @Value("${cloud.aws.bucket.user}")
@@ -39,6 +43,9 @@ public class StorageServiceImpl implements StorageService {
 
     @Value("${cloud.aws.bucket.forum}")
     private String forumBucket;
+
+    @Value("${cloud.aws.bucket.post}")
+    private String postBucket;
 
     private static final List<String> CONTENT_TYPES = Arrays.asList("image/png", "image/jpeg", "image/jpg");
 
@@ -77,6 +84,21 @@ public class StorageServiceImpl implements StorageService {
     }
 
     @Override
+    @Transactional
+    public void savePostImage(MultipartFile multipartFile, String postTitle, Long postId) {
+        String userPostTitle = decodeUrl(postTitle);
+
+        Post post = postRepository.findPostByTitleAndId(userPostTitle, postId)
+                .orElseThrow(() -> new PostException("No post was found"));
+
+            String imgUrl = fileService.uploadFile(multipartFile, postBucket);
+            post.setPostImageUrl(imgUrl);
+            postRepository.save(post);
+
+    }
+
+    @Override
+    @Transactional
     public void updateUserProfile(MultipartFile multipartFile, String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new NoUserFoundException("No user was found"));
