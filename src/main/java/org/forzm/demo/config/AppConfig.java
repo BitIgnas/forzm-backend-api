@@ -74,6 +74,7 @@ public class AppConfig implements CommandLineRunner {
         forum3.setDescription("This is forum for batman arkham games, all users all welcome!");
         forum3.setCreated(Instant.now().plusSeconds(200000000));
         forum3.setImageUrl("https://images2.alphacoders.com/706/thumb-1920-706162.jpg");
+        forum3.setForumGameType(ForumGameType.FPS);
 
         Forum forum4 = new Forum();
         forum4.setUser(user2);
@@ -81,6 +82,7 @@ public class AppConfig implements CommandLineRunner {
         forum4.setDescription("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8HyXzHB_2T1iFR46HNEQO5WVHeibWA5fKgA&usqp=CAU");
         forum4.setCreated(Instant.now().plusMillis(200000000L));
         forum4.setImageUrl("https://www.notebookcheck.net/fileadmin/Notebooks/News/_nc3/cyberpunk_2077_rtx_3070.jpg");
+        forum4.setForumGameType(ForumGameType.FPS);
 
         Forum forum5 = new Forum();
         forum5.setUser(user2);
@@ -95,6 +97,7 @@ public class AppConfig implements CommandLineRunner {
         forum6.setDescription("This is forum for batman arkham games, all users all welcome!");
         forum6.setCreated(Instant.now().plusSeconds(200000000));
         forum6.setImageUrl("https://static-01.shop.com.mm/p/786b1154e512f63e2ad96cd78f470f1e.jpg");
+        forum6.setForumGameType(ForumGameType.FPS);
 
         Forum forum7 = new Forum();
         forum7.setUser(user2);

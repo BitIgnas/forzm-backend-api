@@ -95,6 +95,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public UserResponseDto getUserFromToken(String token) {
         String username = jwtProvider.getUsernameFromJwt(token);
+
         return mapToResponseDto(userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("user was not found")));
     }

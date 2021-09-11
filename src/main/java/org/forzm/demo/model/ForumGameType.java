@@ -6,7 +6,6 @@ public enum ForumGameType {
     RPG,
     ADVENTURE,
     SPORT,
-    PUZZLE,
     SIMULATION,
     FIGHTING,
     MMO,

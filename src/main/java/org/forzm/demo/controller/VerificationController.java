@@ -19,5 +19,10 @@ public class VerificationController {
         return ResponseEntity.status(HttpStatus.OK).body("User activated");
     }
 
-
+    @PostMapping("/user/{username}/email/{email}/resend")
+    public ResponseEntity<?> resendVerificationEmail(@PathVariable("username") String username,
+                                                     @PathVariable String email) {
+        verificationService.resendVerificationMail(username, email);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

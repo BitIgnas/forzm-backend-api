@@ -91,10 +91,15 @@ public class StorageServiceImpl implements StorageService {
         Post post = postRepository.findPostByTitleAndId(userPostTitle, postId)
                 .orElseThrow(() -> new PostException("No post was found"));
 
+        if (CONTENT_TYPES.contains(multipartFile.getContentType()) && multipartFile.getSize() < 10485760) {
             String imgUrl = fileService.uploadFile(multipartFile, postBucket);
             post.setPostImageUrl(imgUrl);
             postRepository.save(post);
-
+        } else if (!CONTENT_TYPES.contains(multipartFile.getContentType())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        } else if (multipartFile.getSize() < 10485760) {
+            throw new ResponseStatusException(HttpStatus.PAYLOAD_TOO_LARGE);
+        }
     }
 
     @Override

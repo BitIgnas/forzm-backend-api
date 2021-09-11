@@ -45,6 +45,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/api/forum/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/post/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/comment/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/verify/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/verify/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/storage/user/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/storage/forum/**").permitAll()
@@ -57,8 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().headers().frameOptions().disable().and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        httpSecurity.addFilterBefore(jwtAuthenticationFilter,
-                UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
 
     }

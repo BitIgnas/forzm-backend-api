@@ -6,6 +6,7 @@ import org.forzm.demo.dto.ForumRequestDto;
 import org.forzm.demo.exception.ForumException;
 import org.forzm.demo.exception.ForumExistsException;
 import org.forzm.demo.model.Forum;
+import org.forzm.demo.model.ForumGameType;
 import org.forzm.demo.model.Post;
 import org.forzm.demo.repository.CommentRepository;
 import org.forzm.demo.repository.ForumRepository;
@@ -72,6 +73,13 @@ public class ForumServiceImpl implements ForumService {
         postRepository.findAllByForum(forum).forEach(commentRepository::deleteAllByPost);
         postRepository.deleteAllByForum(forum);
         forumRepository.delete(forum);
+    }
+
+    @Override
+    public List<ForumResponseDto> findForumsByGameType(ForumGameType gameType) {
+        return forumRepository.findAllByForumGameType(gameType).stream()
+                .map(this::mapToForumResponseDto)
+                .collect(Collectors.toList());
     }
 
     @Override

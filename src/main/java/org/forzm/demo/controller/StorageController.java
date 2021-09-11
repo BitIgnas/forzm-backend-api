@@ -37,10 +37,10 @@ public class StorageController {
 
     @PostMapping("/forum/{forumName}/upload")
     public ResponseEntity<String> uploadForumFile(@RequestParam("file") MultipartFile multipartFile,
-                                                  @PathVariable("forumName") String forumTitle) {
+                                                  @PathVariable("forumName") String forumName) {
         URI location = URI.create(ServletUriComponentsBuilder
-                .fromCurrentContextPath().path("/api/storage/save/file").toUriString());
-        storageService.saveForumImage(multipartFile, forumTitle);
+                .fromCurrentContextPath().path("/api/storage/forum/" + forumName + "/upload/").toUriString());
+        storageService.saveForumImage(multipartFile, forumName);
         return ResponseEntity.created(location).body("Image saved");
     }
 

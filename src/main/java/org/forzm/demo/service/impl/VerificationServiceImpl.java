@@ -9,10 +9,12 @@ import org.forzm.demo.repository.UserRepository;
 import org.forzm.demo.repository.VerificationTokenRepository;
 import org.forzm.demo.service.MailSendingService;
 import org.forzm.demo.service.VerificationService;
+import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
 import java.time.Instant;
@@ -51,7 +53,7 @@ public class VerificationServiceImpl implements VerificationService {
            User user = userRepository.findByUsername(username)
                    .orElseThrow(() -> new UsernameNotFoundException("User was not found"));
            user.setEnabled(true);
-           verificationTokenRepository.delete(verificationToken);
+           verificationTokenRepository.deleteAllByUserUsername(user.getUsername());
        } else {
            throw new VerificationTokenException("Token is invalid");
        }
@@ -59,9 +61,24 @@ public class VerificationServiceImpl implements VerificationService {
 
     @Override
     @Transactional
-    @Scheduled(fixedRate = 7200000)
-    public void deleteExpiredVerificationsTokens() {
+    public void resendVerificationMail(String username, String email) {
+        if(verificationTokenRepository.findAllByUserUsername(username).size() < 3) {
+            User user = userRepository.findByUsername(username)
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+            String token = generateVerificationToken(user);
 
+            sendMail(email, token);
+        } else {
+            throw new ResponseStatusException(HttpStatus.TOO_MANY_REQUESTS);
+        }
+    }
+
+
+    @Override
+    @Transactional
+    @Scheduled(fixedRate = 17200000)
+    public void deleteExpiredVerificationsTokens() {
+        verificationTokenRepository.deleteAllByTokenDurationLessThan(Instant.now());
     }
 
     @Override

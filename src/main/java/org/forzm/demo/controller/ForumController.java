@@ -3,6 +3,7 @@ package org.forzm.demo.controller;
 import lombok.AllArgsConstructor;
 import org.forzm.demo.dto.ForumRequestDto;
 import org.forzm.demo.dto.ForumResponseDto;
+import org.forzm.demo.model.ForumGameType;
 import org.forzm.demo.service.ForumService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,12 +36,16 @@ public class ForumController {
     public ResponseEntity<Boolean> checkIfForumIsUsers(@PathVariable("forumName") String forumName,
                                                      @PathVariable("username") String username) {
         return ResponseEntity.status(HttpStatus.OK).body(forumService.checkIfForumIsUsers(forumName, username));
-
     }
 
     @GetMapping("/{forumName}")
     public ResponseEntity<ForumResponseDto> getForumByName(@PathVariable("forumName") String name) {
         return ResponseEntity.status(HttpStatus.OK).body(forumService.findForumByName(name));
+    }
+
+    @GetMapping("/type/{forumGameType}")
+    public ResponseEntity<List<ForumResponseDto>> getForumsByForumGameType(@PathVariable("forumGameType") ForumGameType forumGameType) {
+        return ResponseEntity.status(HttpStatus.OK).body(forumService.findForumsByGameType(forumGameType));
     }
 
     @GetMapping("/{forumName}/search")

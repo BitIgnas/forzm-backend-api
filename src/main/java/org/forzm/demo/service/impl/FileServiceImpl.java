@@ -36,8 +36,6 @@ public class FileServiceImpl implements FileService {
         metadata.setContentLength(file.getSize());
         metadata.setContentType(file.getContentType());
 
-
-
         try {
             amazonS3Client.putObject(bucket, fileKey, file.getInputStream(), metadata);
         } catch (IOException ioException) {
