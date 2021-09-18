@@ -54,7 +54,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
 
-    @ExceptionHandler({IllegalArgumentException.class})
+    @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ApiError> handleIllegalArgumentException(WebRequest request, IllegalArgumentException exception) {
         ApiError apiError = ApiError.builder()
                 .statusCode(HttpStatus.BAD_REQUEST.value())

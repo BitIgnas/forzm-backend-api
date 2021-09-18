@@ -1,6 +1,7 @@
 package org.forzm.demo.controllerAdvice;
 
 import io.jsonwebtoken.ExpiredJwtException;
+import org.forzm.demo.exception.ExpiredVerificationTokenException;
 import org.forzm.demo.exception.PostException;
 import org.forzm.demo.exception.RefreshTokenException;
 import org.forzm.demo.exception.VerificationTokenException;
@@ -68,5 +69,18 @@ public class TokenControllerAdvice extends ResponseEntityExceptionHandler {
                 .build();
 
         return new ResponseEntity<>(apiError, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ExpiredVerificationTokenException.class)
+    public ResponseEntity<ApiError> handleExpiredVerificationToken(WebRequest request, RuntimeException exception) {
+        ApiError apiError = ApiError.builder()
+                .statusCode(HttpStatus.UNAUTHORIZED.value())
+                .httpStatus(HttpStatus.UNAUTHORIZED)
+                .message(exception.getMessage())
+                .description(request.getDescription(false))
+                .timestamp(Instant.now())
+                .build();
+
+        return new ResponseEntity<>(apiError, HttpStatus.UNAUTHORIZED);
     }
 }

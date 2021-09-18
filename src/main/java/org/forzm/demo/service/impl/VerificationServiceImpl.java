@@ -2,6 +2,7 @@ package org.forzm.demo.service.impl;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.forzm.demo.exception.ExpiredVerificationTokenException;
 import org.forzm.demo.exception.VerificationTokenException;
 import org.forzm.demo.model.User;
 import org.forzm.demo.model.VerificationToken;
@@ -54,8 +55,8 @@ public class VerificationServiceImpl implements VerificationService {
                    .orElseThrow(() -> new UsernameNotFoundException("User was not found"));
            user.setEnabled(true);
            verificationTokenRepository.deleteAllByUserUsername(user.getUsername());
-       } else {
-           throw new VerificationTokenException("Token is invalid");
+       } else if(verificationToken.getTokenDuration().isBefore(Instant.now())) {
+           throw new ExpiredVerificationTokenException("Verification Token is expired");
        }
     }
 
