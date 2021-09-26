@@ -53,6 +53,12 @@ public class ForumController {
         return ResponseEntity.status(HttpStatus.OK).body(forumService.findForumByNameIgnoreCase(name));
     }
 
+    @GetMapping("/{forumName}/{gameType}/search")
+    public ResponseEntity<List<ForumResponseDto>> searchForumsByNameAndForumGameType(@PathVariable("forumName") String name,
+                                                                                     @PathVariable("gameType") ForumGameType forumGameType) {
+        return ResponseEntity.status(HttpStatus.OK).body(forumService.searchForumByNameAndGameType(name, forumGameType));
+    }
+
     @GetMapping("/{username}/forums")
     public ResponseEntity<List<ForumResponseDto>> findUserForumsByUsername(@PathVariable("username") String username) {
         return ResponseEntity.status(HttpStatus.OK).body(forumService.findUserForumsByUsername(username));

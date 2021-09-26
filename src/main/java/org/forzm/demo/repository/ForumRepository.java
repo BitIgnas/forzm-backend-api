@@ -16,6 +16,8 @@ public interface ForumRepository extends JpaRepository<Forum, Long> {
     List<Forum> findForumsByUser_Username(String username);
     List<Forum> getAllByOrderByPostsAsc();
     List<Forum> getAllByNameContainingIgnoreCase(String name);
+    List<Forum> findAllByNameAndForumGameType(String name, ForumGameType forumGameType);
+    List<Forum> findAllByNameContainingAndForumGameType(String name, ForumGameType forumGameType);
     void deleteByName(String name);
     List<Forum> findAllByForumGameType(ForumGameType forumGameType);
     Optional<Forum> findForumsByNameAndUserUsername(String forumName, String username);

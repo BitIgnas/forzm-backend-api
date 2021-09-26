@@ -76,6 +76,13 @@ public class ForumServiceImpl implements ForumService {
     }
 
     @Override
+    public List<ForumResponseDto> searchForumByNameAndGameType(String name, ForumGameType forumGameType) {
+        return forumRepository.findAllByNameContainingAndForumGameType(name, forumGameType).stream()
+                .map(this::mapToForumResponseDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<ForumResponseDto> findForumsByGameType(ForumGameType gameType) {
         return forumRepository.findAllByForumGameType(gameType).stream()
                 .map(this::mapToForumResponseDto)

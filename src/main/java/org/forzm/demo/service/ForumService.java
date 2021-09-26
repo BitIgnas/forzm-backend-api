@@ -13,6 +13,7 @@ public interface ForumService {
     ForumResponseDto createForum(ForumRequestDto forumRequestDto);
     List<ForumResponseDto> findForumByNameIgnoreCase(String name);
     void deleteForum(String name);
+    List<ForumResponseDto> searchForumByNameAndGameType(String name, ForumGameType forumGameType);
     List<ForumResponseDto> findForumsByGameType(ForumGameType gameType);
     boolean checkIfForumIsUsers(String forumName, String username);
     List<ForumResponseDto> findUserForumsByUsername(String username);
